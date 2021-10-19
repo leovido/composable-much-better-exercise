@@ -21,8 +21,9 @@ TCA allows developers to fully encapsulate state, actions and environment to con
 This allows for easier dependency management where we can have more control of what goes where when needed.
 
 Compared to other ways of building and developing applications, TCA allows for building new **Features** in parallel in a big team.
+Productivity increases while cognitive load stays at a manageable level.
 
-## About the app
+## About 
 The application logs in silenty in the background requesting for a token that will be used to fetch the balance and transactions from the user.
 
 ## For developers running the code
