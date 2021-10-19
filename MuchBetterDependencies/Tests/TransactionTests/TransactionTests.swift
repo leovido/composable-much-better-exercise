@@ -93,18 +93,6 @@ class TransactionTests: XCTestCase {
         )
     }
 
-    func testUI() {
-        let store: Store<TransactionState, TransactionAction> = .init(
-            initialState: .init(transactions: [], searchText: ""),
-            reducer: transactionReducer,
-            environment: TransactionEnvironment.mock
-        )
-
-        let transactionView = UIHostingController(rootView: TransactionView(store: store))
-
-        assertSnapshot(matching: transactionView, as: .image(on: .iPhoneXsMax))
-    }
-
     func testTransactionErrorLocalization() {
         let error = TransactionError.message("Error")
         XCTAssertEqual(error.localizedDescription, "Error")

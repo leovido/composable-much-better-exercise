@@ -70,10 +70,17 @@ public struct TransactionView: View {
                     .listStyle(InsetGroupedListStyle())
                 } else {
                     VStack {
+                        Spacer()
                         Text("No transactions")
+                            .font(.headline)
                             .fontWeight(.bold)
-                        Text("We haven't found any transactions. Why not spend on a treat?")
+                        Text("We haven't found any transactions. Fancy a treat?")
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color(UIColor.systemGray))
+                            .padding(.top, 1)
+                            .padding([.leading, .trailing])
                             .font(.caption)
+                        Spacer()
                     }
                 }
             }
