@@ -18,10 +18,6 @@ let package = Package(
             targets: ["BalanceFeature"]
         ),
         .library(
-            name: "BalanceTests",
-            targets: ["BalanceTests"]
-        ),
-        .library(
             name: "Client",
             targets: ["Client"]
         ),
@@ -30,32 +26,16 @@ let package = Package(
             targets: ["Common"]
         ),
         .library(
-            name: "CommonTests",
-            targets: ["CommonTests"]
-        ),
-        .library(
             name: "LoginFeature",
             targets: ["LoginFeature"]
-        ),
-        .library(
-            name: "LoginTests",
-            targets: ["LoginTests"]
         ),
         .library(
             name: "SpendFeature",
             targets: ["SpendFeature"]
         ),
         .library(
-            name: "SpendTests",
-            targets: ["SpendTests"]
-        ),
-        .library(
             name: "TransactionFeature",
             targets: ["TransactionFeature"]
-        ),
-        .library(
-            name: "TransactionTests",
-            targets: ["TransactionTests"]
         ),
     ],
     dependencies: [

@@ -14,31 +14,12 @@
 		2D70004B2715AB84007213EB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 2D70004A2715AB84007213EB /* AppFeature */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		2D70002A2715A409007213EB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2D7000112715A407007213EB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2D7000182715A407007213EB;
-			remoteInfo = "composable-much-better-exercise";
-		};
-		2D7000342715A40A007213EB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2D7000112715A407007213EB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2D7000182715A407007213EB;
-			remoteInfo = "composable-much-better-exercise";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		2D7000192715A407007213EB /* composable-much-better-exercise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "composable-much-better-exercise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D70001C2715A407007213EB /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		2D70001E2715A407007213EB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2D7000202715A409007213EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2D7000232715A409007213EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		2D7000292715A409007213EB /* composable-much-better-exerciseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "composable-much-better-exerciseTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D7000332715A40A007213EB /* composable-much-better-exerciseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "composable-much-better-exerciseUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D7000462715A686007213EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -48,20 +29,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D70004B2715AB84007213EB /* AppFeature in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D7000262715A409007213EB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D7000302715A40A007213EB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,8 +48,6 @@
 			isa = PBXGroup;
 			children = (
 				2D7000192715A407007213EB /* composable-much-better-exercise.app */,
-				2D7000292715A409007213EB /* composable-much-better-exerciseTests.xctest */,
-				2D7000332715A40A007213EB /* composable-much-better-exerciseUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,42 +103,6 @@
 			productReference = 2D7000192715A407007213EB /* composable-much-better-exercise.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D7000282715A409007213EB /* composable-much-better-exerciseTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2D7000402715A40A007213EB /* Build configuration list for PBXNativeTarget "composable-much-better-exerciseTests" */;
-			buildPhases = (
-				2D7000252715A409007213EB /* Sources */,
-				2D7000262715A409007213EB /* Frameworks */,
-				2D7000272715A409007213EB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2D70002B2715A409007213EB /* PBXTargetDependency */,
-			);
-			name = "composable-much-better-exerciseTests";
-			productName = "composable-much-better-exerciseTests";
-			productReference = 2D7000292715A409007213EB /* composable-much-better-exerciseTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		2D7000322715A40A007213EB /* composable-much-better-exerciseUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2D7000432715A40A007213EB /* Build configuration list for PBXNativeTarget "composable-much-better-exerciseUITests" */;
-			buildPhases = (
-				2D70002F2715A40A007213EB /* Sources */,
-				2D7000302715A40A007213EB /* Frameworks */,
-				2D7000312715A40A007213EB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2D7000352715A40A007213EB /* PBXTargetDependency */,
-			);
-			name = "composable-much-better-exerciseUITests";
-			productName = "composable-much-better-exerciseUITests";
-			productReference = 2D7000332715A40A007213EB /* composable-much-better-exerciseUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -186,14 +115,6 @@
 				TargetAttributes = {
 					2D7000182715A407007213EB = {
 						CreatedOnToolsVersion = 13.0;
-					};
-					2D7000282715A409007213EB = {
-						CreatedOnToolsVersion = 13.0;
-						TestTargetID = 2D7000182715A407007213EB;
-					};
-					2D7000322715A40A007213EB = {
-						CreatedOnToolsVersion = 13.0;
-						TestTargetID = 2D7000182715A407007213EB;
 					};
 				};
 			};
@@ -211,8 +132,6 @@
 			projectRoot = "";
 			targets = (
 				2D7000182715A407007213EB /* composable-much-better-exercise */,
-				2D7000282715A409007213EB /* composable-much-better-exerciseTests */,
-				2D7000322715A40A007213EB /* composable-much-better-exerciseUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -224,20 +143,6 @@
 			files = (
 				2D04ECB6271DCDF700FEF969 /* Assets.xcassets in Resources */,
 				2D7000242715A409007213EB /* Preview Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D7000272715A409007213EB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D7000312715A40A007213EB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,34 +178,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2D7000252715A409007213EB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D70002F2715A40A007213EB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		2D70002B2715A409007213EB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2D7000182715A407007213EB /* composable-much-better-exercise */;
-			targetProxy = 2D70002A2715A409007213EB /* PBXContainerItemProxy */;
-		};
-		2D7000352715A40A007213EB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2D7000182715A407007213EB /* composable-much-better-exercise */;
-			targetProxy = 2D7000342715A40A007213EB /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2D70003B2715A40A007213EB /* Debug */ = {
@@ -481,102 +359,6 @@
 			};
 			name = Release;
 		};
-		2D7000412715A40A007213EB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HL92L2PJSU;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.christianleovido.composable-much-better-exerciseTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/composable-much-better-exercise.app/composable-much-better-exercise";
-			};
-			name = Debug;
-		};
-		2D7000422715A40A007213EB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HL92L2PJSU;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.christianleovido.composable-much-better-exerciseTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/composable-much-better-exercise.app/composable-much-better-exercise";
-			};
-			name = Release;
-		};
-		2D7000442715A40A007213EB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HL92L2PJSU;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.christianleovido.composable-much-better-exerciseUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "composable-much-better-exercise";
-			};
-			name = Debug;
-		};
-		2D7000452715A40A007213EB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HL92L2PJSU;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.christianleovido.composable-much-better-exerciseUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "composable-much-better-exercise";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -594,24 +376,6 @@
 			buildConfigurations = (
 				2D70003E2715A40A007213EB /* Debug */,
 				2D70003F2715A40A007213EB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2D7000402715A40A007213EB /* Build configuration list for PBXNativeTarget "composable-much-better-exerciseTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2D7000412715A40A007213EB /* Debug */,
-				2D7000422715A40A007213EB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2D7000432715A40A007213EB /* Build configuration list for PBXNativeTarget "composable-much-better-exerciseUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2D7000442715A40A007213EB /* Debug */,
-				2D7000452715A40A007213EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
