@@ -48,6 +48,7 @@ public struct SpendView: View {
 
                     Spacer()
                 }
+                .background(Color(UIColor.systemGray6))
                 .navigationTitle(Text("Spend"))
             }
         }
