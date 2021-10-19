@@ -1,11 +1,7 @@
 
-<div style="block: inline">
-    <img alt="AppView for composable-much-better-exercise; Christian Ray Leovido" src="https://user-images.githubusercontent.com/18484997/137920419-cac28727-659d-4881-a9ef-73773557716e.png" width="30%">
-<img alt="AppView for composable-much-better-exercise; Christian Ray Leovido" src="https://user-images.githubusercontent.com/18484997/137920437-ad21c431-3da6-4ffa-ba8f-c4fb51f4e2cd.png" width="30%">
-  
-  <img alt="SpendView" src="https://user-images.githubusercontent.com/18484997/137920444-053aa9db-49de-4c52-a65e-6011e7761eb4.png" width="30%" >
-  
-  </div>
+
+<img alt="AppView for composable-much-better-exercise; Christian Ray Leovido" src="https://user-images.githubusercontent.com/18484997/137935353-07ccb47c-6bd3-4906-9bbf-4bc362f2d4ba.png" width="30%">
+
 
 # composable-much-better-exercise (TCA) [![Swift Version](https://img.shields.io/badge/swift-5.5-orange)](https://github.com/apple/swift) ![iOS version](https://img.shields.io/badge/iOS%20version-15.0-blue) ![architecture](https://img.shields.io/badge/architecture-TCA-brightgreen) ![Follow](https://img.shields.io/twitter/follow/c_leovido?style=social)
 
@@ -49,15 +45,11 @@ These components are stored in folders here: [MuchBetterDependencies > Sources](
 
 ## Screenshots
 
-<img src="https://user-images.githubusercontent.com/18484997/137920419-cac28727-659d-4881-a9ef-73773557716e.png" alt="AppView for composable-much-better-exercise; Christian Ray Leovido"
-	title="AppView for composable-much-better-exercise" width="250" align=left />
+<div style="block: inline">
+    <img alt="AppView for composable-much-better-exercise; Christian Ray Leovido" src="https://user-images.githubusercontent.com/18484997/137920419-cac28727-659d-4881-a9ef-73773557716e.png" width="30%">
+<img alt="AppView for composable-much-better-exercise; Christian Ray Leovido" src="https://user-images.githubusercontent.com/18484997/137920437-ad21c431-3da6-4ffa-ba8f-c4fb51f4e2cd.png" width="30%">
   
-<img src="https://user-images.githubusercontent.com/18484997/137920437-ad21c431-3da6-4ffa-ba8f-c4fb51f4e2cd.png" alt="AppView for composable-much-better-exercise; Christian Ray Leovido"
-	title="AppView with TransactionView for composable-much-better-exercise" width="250" align=left />
+  <img alt="SpendView" src="https://user-images.githubusercontent.com/18484997/137920444-053aa9db-49de-4c52-a65e-6011e7761eb4.png" width="30%" >
   
-  <img src="https://user-images.githubusercontent.com/18484997/137920444-053aa9db-49de-4c52-a65e-6011e7761eb4.png" alt="AppView for composable-much-better-exercise; Christian Ray Leovido"
-	title="Spend for composable-much-better-exercise" width="250" align=left />
-  
-
-
+  </div>
 
