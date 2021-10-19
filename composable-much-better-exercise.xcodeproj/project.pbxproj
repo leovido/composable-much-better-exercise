@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2D70001D2715A407007213EB /* composable_much_better_exerciseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D70001C2715A407007213EB /* composable_much_better_exerciseApp.swift */; };
+		2D04ECB6271DCDF700FEF969 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D7000202715A409007213EB /* Assets.xcassets */; };
+		2D70001D2715A407007213EB /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D70001C2715A407007213EB /* App.swift */; };
 		2D70001F2715A407007213EB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D70001E2715A407007213EB /* ContentView.swift */; };
-		2D7000212715A409007213EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D7000202715A409007213EB /* Assets.xcassets */; };
 		2D7000242715A409007213EB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D7000232715A409007213EB /* Preview Assets.xcassets */; };
 		2D70002E2715A40A007213EB /* composable_much_better_exerciseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D70002D2715A40A007213EB /* composable_much_better_exerciseTests.swift */; };
-		2D7000382715A40A007213EB /* composable_much_better_exerciseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7000372715A40A007213EB /* composable_much_better_exerciseUITests.swift */; };
-		2D70003A2715A40A007213EB /* composable_much_better_exerciseUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7000392715A40A007213EB /* composable_much_better_exerciseUITestsLaunchTests.swift */; };
+		2D70004B2715AB84007213EB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 2D70004A2715AB84007213EB /* AppFeature */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,15 +34,14 @@
 
 /* Begin PBXFileReference section */
 		2D7000192715A407007213EB /* composable-much-better-exercise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "composable-much-better-exercise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D70001C2715A407007213EB /* composable_much_better_exerciseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = composable_much_better_exerciseApp.swift; sourceTree = "<group>"; };
+		2D70001C2715A407007213EB /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		2D70001E2715A407007213EB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2D7000202715A409007213EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2D7000232715A409007213EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2D7000292715A409007213EB /* composable-much-better-exerciseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "composable-much-better-exerciseTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D70002D2715A40A007213EB /* composable_much_better_exerciseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = composable_much_better_exerciseTests.swift; sourceTree = "<group>"; };
 		2D7000332715A40A007213EB /* composable-much-better-exerciseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "composable-much-better-exerciseUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D7000372715A40A007213EB /* composable_much_better_exerciseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = composable_much_better_exerciseUITests.swift; sourceTree = "<group>"; };
-		2D7000392715A40A007213EB /* composable_much_better_exerciseUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = composable_much_better_exerciseUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2D7000462715A686007213EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D70004B2715AB84007213EB /* AppFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,8 +75,8 @@
 			children = (
 				2D70001B2715A407007213EB /* composable-much-better-exercise */,
 				2D70002C2715A40A007213EB /* composable-much-better-exerciseTests */,
-				2D7000362715A40A007213EB /* composable-much-better-exerciseUITests */,
 				2D70001A2715A407007213EB /* Products */,
+				2D7000472715A68C007213EB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,7 +93,8 @@
 		2D70001B2715A407007213EB /* composable-much-better-exercise */ = {
 			isa = PBXGroup;
 			children = (
-				2D70001C2715A407007213EB /* composable_much_better_exerciseApp.swift */,
+				2D7000462715A686007213EB /* Info.plist */,
+				2D70001C2715A407007213EB /* App.swift */,
 				2D70001E2715A407007213EB /* ContentView.swift */,
 				2D7000202715A409007213EB /* Assets.xcassets */,
 				2D7000222715A409007213EB /* Preview Content */,
@@ -118,13 +118,11 @@
 			path = "composable-much-better-exerciseTests";
 			sourceTree = "<group>";
 		};
-		2D7000362715A40A007213EB /* composable-much-better-exerciseUITests */ = {
+		2D7000472715A68C007213EB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2D7000372715A40A007213EB /* composable_much_better_exerciseUITests.swift */,
-				2D7000392715A40A007213EB /* composable_much_better_exerciseUITestsLaunchTests.swift */,
 			);
-			path = "composable-much-better-exerciseUITests";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,12 +135,16 @@
 				2D7000152715A407007213EB /* Sources */,
 				2D7000162715A407007213EB /* Frameworks */,
 				2D7000172715A407007213EB /* Resources */,
+				2D70004C2715AE6B007213EB /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "composable-much-better-exercise";
+			packageProductDependencies = (
+				2D70004A2715AB84007213EB /* AppFeature */,
+			);
 			productName = "composable-much-better-exercise";
 			productReference = 2D7000192715A407007213EB /* composable-much-better-exercise.app */;
 			productType = "com.apple.product-type.application";
@@ -231,8 +233,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D04ECB6271DCDF700FEF969 /* Assets.xcassets in Resources */,
 				2D7000242715A409007213EB /* Preview Assets.xcassets in Resources */,
-				2D7000212715A409007213EB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,13 +254,33 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2D70004C2715AE6B007213EB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftformat >/dev/null; then\nswiftformat .\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2D7000152715A407007213EB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				2D70001F2715A407007213EB /* ContentView.swift in Sources */,
-				2D70001D2715A407007213EB /* composable_much_better_exerciseApp.swift in Sources */,
+				2D70001D2715A407007213EB /* App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,8 +296,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D70003A2715A40A007213EB /* composable_much_better_exerciseUITestsLaunchTests.swift in Sources */,
-				2D7000382715A40A007213EB /* composable_much_better_exerciseUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,12 +442,13 @@
 				DEVELOPMENT_TEAM = HL92L2PJSU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "composable-much-better-exercise/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -452,12 +473,13 @@
 				DEVELOPMENT_TEAM = HL92L2PJSU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "composable-much-better-exercise/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -607,6 +629,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2D70004A2715AB84007213EB /* AppFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppFeature;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2D7000112715A407007213EB /* Project object */;
 }
