@@ -36,6 +36,7 @@ public enum AppAction: Equatable {
     case login(LoginAction)
     case spend(SpendAction)
     case transaction(TransactionAction)
+    case logout
 }
 
 public struct AppEnvironment {
@@ -97,6 +98,10 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
 
 ).combined(with: Reducer<AppState, AppAction, AppEnvironment>({ state, action, _ in
     switch action {
+    case .logout:
+        state.loginState = LoginState()
+
+        return .none
     case .balance:
         return .none
     case let .login(loginAction):
