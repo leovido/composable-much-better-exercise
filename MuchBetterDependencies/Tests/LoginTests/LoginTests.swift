@@ -25,23 +25,23 @@ final class LoginTests: XCTestCase {
                               reducer: loginReducer,
                               environment: failMock)
 
-		let expected = LoginError.message("Login error")
-		let expectedErrorAlert =  AlertState(
-			title: TextState("Error"),
-			message: TextState("Login error"),
-			buttons: [
-				AlertState.Button.default(
-					TextState("Ok"),
-					action: AlertState.ButtonAction.send(LoginAction.dismissLoginAlert)
-				)
-			]
-		)
+        let expected = LoginError.message("Login error")
+        let expectedErrorAlert = AlertState(
+            title: TextState("Error"),
+            message: TextState("Login error"),
+            buttons: [
+                AlertState.Button.default(
+                    TextState("Ok"),
+                    action: AlertState.ButtonAction.send(LoginAction.dismissLoginAlert)
+                ),
+            ]
+        )
 
-		store.assert(
-			.send(.login),
-			.receive(.loginResponse(.failure(expected))) {
+        store.assert(
+            .send(.login),
+            .receive(.loginResponse(.failure(expected))) {
                 $0.token = ""
-				$0.alert = expectedErrorAlert
+                $0.alert = expectedErrorAlert
             }
         )
     }

@@ -17,27 +17,27 @@ final class LoginUITests: XCTestCase {
         assertSnapshot(matching: loginView, as: .image(on: .iPhoneXsMax))
     }
 
-	func testLoginUIEmail() {
-		let store: Store<LoginState, LoginAction> = .init(
-			initialState: .init(email: "user@muchbetter.com"),
-			reducer: .empty,
-			environment: LoginEnvironment.mock
-		)
+    func testLoginUIEmail() {
+        let store: Store<LoginState, LoginAction> = .init(
+            initialState: .init(email: "user@muchbetter.com"),
+            reducer: .empty,
+            environment: LoginEnvironment.mock
+        )
 
-		let loginView = UIHostingController(rootView: LoginView(store: store))
+        let loginView = UIHostingController(rootView: LoginView(store: store))
 
-		assertSnapshot(matching: loginView, as: .image(on: .iPhoneXsMax))
-	}
+        assertSnapshot(matching: loginView, as: .image(on: .iPhoneXsMax))
+    }
 
-	func testLoginUIPassword() {
-		let store: Store<LoginState, LoginAction> = .init(
-			initialState: .init(password: "super-secure-password"),
-			reducer: .empty,
-			environment: LoginEnvironment.mock
-		)
+    func testLoginUIPassword() {
+        let store: Store<LoginState, LoginAction> = .init(
+            initialState: .init(password: "super-secure-password"),
+            reducer: .empty,
+            environment: LoginEnvironment.mock
+        )
 
-		let loginView = UIHostingController(rootView: LoginView(store: store))
+        let loginView = UIHostingController(rootView: LoginView(store: store))
 
-		assertSnapshot(matching: loginView, as: .image(on: .iPhoneXsMax))
-	}
+        assertSnapshot(matching: loginView, as: .image(on: .iPhoneXsMax))
+    }
 }
