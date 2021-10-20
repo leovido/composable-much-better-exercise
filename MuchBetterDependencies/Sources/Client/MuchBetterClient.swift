@@ -40,7 +40,7 @@ public class Client {
         return components
     }
 
-    public func login() -> AnyPublisher<Token, Error> {
+    public func login(email _: String = "", password _: String = "") -> AnyPublisher<Token, Error> {
         let components = makeComponents()
         guard var url = components.url else {
             fatalError()
@@ -51,31 +51,42 @@ public class Client {
         var request = URLRequest(url: url)
         request.httpMethod = Method.POST.rawValue
 
+        //		When using an API that requires an email and a password. In this case, there's no need for an email and password to aunthenticate, as the current API doesn't require it
+        //		request.httpBody = ...
+
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         let pub = URLSession.shared.dataTaskPublisher(for: request)
             .receive(on: DispatchQueue.main)
-            .map {
+            .tryMap {
                 guard let res = $0.response as? HTTPURLResponse else {
-                    return Data()
+                    throw NSError(domain: "Invalid response", code: 404, userInfo: nil) as Error
                 }
 
                 guard (200 ..< 399) ~= res.statusCode else {
-                    return Data()
+                    throw NSError(domain: "Invalid response", code: res.statusCode, userInfo: nil) as Error
                 }
 
                 return $0.data
             }
             .decode(type: TokenResponse.self, decoder: JSONDecoder())
             .mapError { $0 }
+            .map(\.token)
             .share()
 
+        pub
+            .catch { _ -> Just<Token> in
+                Just("")
+            }
+            .subscribe(token)
+            .store(in: &subscriptions)
+
         return pub
-            .map(\.token)
-            .handleEvents(receiveOutput: { newToken in
-                self.token.send(newToken)
-            })
             .eraseToAnyPublisher()
+    }
+
+    public func logout() {
+        token.send("")
     }
 
     public func makeRequest(data: Data? = nil, endpoint: Endpoint, httpMethod: Method, headers _: [String: Any]) -> URLRequest? {
