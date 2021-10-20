@@ -63,6 +63,9 @@ let package = Package(
                 "LoginFeature",
                 "SpendFeature",
                 "TransactionFeature",
+            ],
+            exclude: [
+                "__Snapshots__",
             ]
         ),
         .target(
@@ -77,6 +80,9 @@ let package = Package(
             dependencies: [
                 "BalanceFeature",
                 "SnapshotTesting",
+            ],
+            exclude: [
+                "__Snapshots__",
             ]
         ),
         .target(
@@ -107,6 +113,9 @@ let package = Package(
             dependencies: [
                 "LoginFeature",
                 "SnapshotTesting",
+            ],
+            exclude: [
+                "__Snapshots__",
             ]
         ),
         .target(
@@ -121,6 +130,9 @@ let package = Package(
             dependencies: [
                 "SpendFeature",
                 "SnapshotTesting",
+            ],
+            exclude: [
+                "__Snapshots__",
             ]
         ),
         .target(
@@ -135,6 +147,9 @@ let package = Package(
             dependencies: [
                 "TransactionFeature",
                 "SnapshotTesting",
+            ],
+            exclude: [
+                "__Snapshots__",
             ]
         ),
     ]
