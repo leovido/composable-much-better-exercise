@@ -168,7 +168,7 @@ public let transactionReducer: Reducer<
             }
 
             state.searchText = newSearchText
-            state.filteredTransactions = state.transactions.filter { $0.description.contains(newSearchText) }
+            state.filteredTransactions = state.transactions.filter { $0.description.uppercased().contains(newSearchText.uppercased()) }
 
             return .none
 
@@ -187,6 +187,7 @@ public let transactionReducer: Reducer<
             state.filteredTransactions = newTransactions
 
             return .none
+
         case let .receiveTransactions(.failure(error)):
 
             return .none
