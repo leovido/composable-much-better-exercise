@@ -31,25 +31,32 @@ public struct LoginView: View {
 
                 TextField("Email", text: viewStore.binding(
                     get: { $0.email },
-                    send: LoginAction.login
+                    send: LoginAction.emailValidate
                 ),
                 prompt: Text("user@muchbetter.com"))
+                    .multilineTextAlignment(.center)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .border(viewStore.isEmailValid == nil ? Color.clear : (viewStore.isEmailValid! ? Color.green : Color.red), width: 1)
                     .background(Color.white)
                     .padding([.leading, .trailing])
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)
+                    .disableAutocorrection(true)
 
                 SecureField("Password", text: viewStore.binding(
                     get: { $0.email },
-                    send: LoginAction.login
+                    send: LoginAction.passwordValidate
                 ),
                 prompt: Text("········"))
+                    .multilineTextAlignment(.center)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .border(viewStore.isPasswordValid == nil ? Color.clear : (viewStore.isPasswordValid! ? Color.green : Color.red), width: 1)
                     .padding([.leading, .trailing])
 
                 Button(action: {
-                    viewStore.send(.login)
+                    withAnimation {
+                        viewStore.send(.login)
+                    }
                 }, label: {
                     Text("Login")
                         .foregroundColor(Color.white)
@@ -64,9 +71,6 @@ public struct LoginView: View {
             }
             .padding()
             .background(Color(UIColor.systemGray6))
-            .onAppear {
-                viewStore.send(.login)
-            }
         }
     }
 }
