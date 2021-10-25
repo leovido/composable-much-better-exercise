@@ -4,7 +4,7 @@ import XCTest
 
 final class LoginTests: XCTestCase {
     func testLogin() {
-        let store = TestStore(initialState: LoginState(token: ""),
+        let store = TestStore(initialState: LoginState(),
                               reducer: loginReducer,
                               environment: LoginEnvironment.mock)
 
@@ -12,25 +12,29 @@ final class LoginTests: XCTestCase {
 
         store.assert(
             .send(.login),
-            .receive(.loginResponse(.success(expected))) {
-                $0.token = expected
-            }
+            .receive(.loginResponse(.success(expected)))
         )
     }
 
-    func testSpendError() {
+    func testLoginError() {
         let failMock = LoginEnvironment.failing
 
-        let store = TestStore(initialState: LoginState(token: ""),
+        let store = TestStore(initialState: LoginState(),
                               reducer: loginReducer,
                               environment: failMock)
 
         let expected = LoginError.message("Login error")
+        let expectedAlert = AlertState(
+            title: TextState("Error"),
+            message: TextState("Login error"),
+            dismissButton: .default(TextState("Ok"),
+                                    action: .send(LoginAction.dismissAlert))
+        )
 
         store.assert(
             .send(.login),
             .receive(.loginResponse(.failure(expected))) {
-                $0.token = ""
+                $0.alert = expectedAlert
             }
         )
     }

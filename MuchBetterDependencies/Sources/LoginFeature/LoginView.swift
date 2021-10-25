@@ -17,56 +17,11 @@ public struct LoginView: View {
 
     public var body: some View {
         WithViewStore(store) { viewStore in
-            VStack {
-                Spacer()
-                VStack {
-                    Text("MuchBetter app".uppercased())
-                        .font(.largeTitle)
-                        .fontWeight(.black)
-
-                    Text("with TCA (The Composable Architecture)")
-                        .font(.caption)
-                }
-                .padding(.bottom, 50)
-
-                TextField("Email", text: viewStore.binding(
-                    get: { $0.email },
-                    send: LoginAction.login
-                ),
-                prompt: Text("user@muchbetter.com"))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .background(Color.white)
-                    .padding([.leading, .trailing])
-                    .keyboardType(.emailAddress)
-                    .autocapitalization(.none)
-
-                SecureField("Password", text: viewStore.binding(
-                    get: { $0.email },
-                    send: LoginAction.login
-                ),
-                prompt: Text("········"))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding([.leading, .trailing])
-
-                Button(action: {
+            ProgressView("Logging you in...")
+                .progressViewStyle(CircularProgressViewStyle(tint: .orange))
+                .onAppear {
                     viewStore.send(.login)
-                }, label: {
-                    Text("Login")
-                        .foregroundColor(Color.white)
-                })
-                    .padding(10)
-                    .padding([.leading, .trailing], 15)
-                    .background(Color.orange)
-                    .clipShape(Capsule())
-                    .padding()
-
-                Spacer()
-            }
-            .padding()
-            .background(Color(UIColor.systemGray6))
-            .onAppear {
-                viewStore.send(.login)
-            }
+                }
         }
     }
 }

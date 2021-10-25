@@ -65,8 +65,8 @@ public let loginReducer: Reducer<
         case let .loginResponse(.failure(error)):
 
             state.alert = .init(
-                title: TextState(""),
-                message: TextState(""),
+                title: TextState("Error"),
+                message: TextState(error.localizedDescription),
                 dismissButton: .default(
                     TextState("Ok"),
                     action: .send(.dismissAlert)
