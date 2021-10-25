@@ -5,7 +5,7 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
-class SpendTests: XCTestCase {
+final class SpendTests: XCTestCase {
     func testSpend() {
         let store = TestStore(initialState: SpendState(),
                               reducer: spendReducer,
@@ -51,6 +51,9 @@ class SpendTests: XCTestCase {
             .send(.spendRequest),
             .receive(.fieldsEmptyResponse) {
                 $0.spendAlert = expectedAlert
+            },
+            .send(.dismissAlert) {
+                $0.spendAlert = nil
             }
         )
     }

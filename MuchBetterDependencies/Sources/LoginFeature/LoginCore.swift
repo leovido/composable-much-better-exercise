@@ -42,12 +42,6 @@ public struct LoginEnvironment {
 }
 
 public extension LoginEnvironment {
-    static let live: LoginEnvironment = .init { _, _ in
-        Client.shared.login()
-            .mapError { LoginError.message($0.localizedDescription) }
-            .eraseToEffect()
-    }
-
     static var mock: LoginEnvironment = .init(mainQueue: .immediate) { _, _ in
         Effect(value: "token from server")
     }

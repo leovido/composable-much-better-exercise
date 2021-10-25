@@ -1,5 +1,5 @@
-@testable import Common
 import XCTest
+@testable import Common
 
 final class CommonTests: XCTestCase {
     func testNumberFormatterForBalance() {

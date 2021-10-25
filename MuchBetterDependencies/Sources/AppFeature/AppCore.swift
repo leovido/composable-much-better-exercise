@@ -99,15 +99,9 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
     switch action {
     case .balance:
         return .none
-    case let .login(loginAction):
-
-        switch loginAction {
-        case let .loginResponse(.success(newToken)):
-            state.loginState = nil
-
-            return .none
-        default: return .none
-        }
+    case .login:
+        state.loginState = nil
+        return .none
     case .spend:
         return .none
     case .transaction:

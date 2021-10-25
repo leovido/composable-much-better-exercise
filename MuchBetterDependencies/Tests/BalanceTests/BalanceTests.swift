@@ -1,7 +1,7 @@
-@testable import BalanceFeature
 import Common
 import ComposableArchitecture
 import XCTest
+@testable import BalanceFeature
 
 final class BalanceTest: XCTestCase {
     func testFetchBalance() {
@@ -39,6 +39,9 @@ final class BalanceTest: XCTestCase {
             .receive(.responseReceiveFetchBalance(.failure(expected))) {
                 $0.balance = ""
                 $0.balanceAlert = expectedAlert
+            },
+            .send(.dismissAlert) {
+                $0.balanceAlert = nil
             }
         )
     }

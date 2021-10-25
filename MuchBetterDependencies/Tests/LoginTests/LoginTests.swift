@@ -1,6 +1,6 @@
 import ComposableArchitecture
-@testable import LoginFeature
 import XCTest
+@testable import LoginFeature
 
 final class LoginTests: XCTestCase {
     func testLogin() {
@@ -35,6 +35,9 @@ final class LoginTests: XCTestCase {
             .send(.login),
             .receive(.loginResponse(.failure(expected))) {
                 $0.alert = expectedAlert
+            },
+            .send(.dismissAlert) {
+                $0.alert = nil
             }
         )
     }

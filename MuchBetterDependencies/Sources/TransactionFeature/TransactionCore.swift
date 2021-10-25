@@ -28,18 +28,20 @@ public struct TransactionState: Equatable {
     public var transactions: [Transaction]
     public var filteredTransactions: [Transaction] = []
     public var searchText: String
-    public var sort: TransactionSort = .oldToNew
+    public var sort: TransactionSort
 
     public var viewState: TransactionViewState
 
     public init(transactions: [Transaction] = [],
                 searchText: String = "",
-                viewState: TransactionViewState = .empty)
+                viewState: TransactionViewState = .empty,
+                sort: TransactionSort = .oldToNew)
     {
         self.transactions = transactions
         filteredTransactions = transactions
         self.searchText = searchText
         self.viewState = viewState
+        self.sort = sort
     }
 }
 
@@ -64,46 +66,6 @@ public struct TransactionEnvironment {
 }
 
 public extension TransactionEnvironment {
-    static let live: TransactionEnvironment = .init(
-        mainQueue: .main,
-        fetchTransactions: {
-            guard let request = Client.shared.makeRequest(
-                endpoint: .transactions,
-                httpMethod: .GET
-            ) else {
-                return Effect(value: [])
-            }
-
-            return URLSession.shared.dataTaskPublisher(for: request)
-                .receive(on: DispatchQueue.main)
-                .map { data, response in
-                    guard let response = response as? HTTPURLResponse else {
-                        return Data()
-                    }
-
-                    guard (200 ..< 399) ~= response.statusCode else {
-                        return Data()
-                    }
-
-                    return data
-                }
-                .decode(type: [Transaction].self, decoder: transactionDecoder)
-                .map {
-                    $0.map {
-                        let amountFormatted = MuchBetterNumberFormatter.formatCurrency($0)
-
-                        return Transaction(id: $0.id,
-                                           date: $0.date,
-                                           description: $0.description,
-                                           amount: amountFormatted,
-                                           currency: $0.currency)
-                    }
-                }
-                .mapError { TransactionError.message($0.localizedDescription) }
-                .eraseToEffect()
-        }
-    )
-
     static let mock: TransactionEnvironment = .init(
         mainQueue: .immediate,
         fetchTransactions: {

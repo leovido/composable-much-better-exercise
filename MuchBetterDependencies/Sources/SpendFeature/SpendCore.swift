@@ -43,34 +43,6 @@ public struct SpendEnvironment {
 }
 
 public extension SpendEnvironment {
-    static let live: SpendEnvironment = .init { transaction in
-
-        guard let data = try? JSONEncoder.customEncoder.encode(transaction) else {
-            return .none
-        }
-
-        guard let request = Client.shared.makeRequest(data: data, endpoint: .spend, httpMethod: .POST) else {
-            return .none
-        }
-
-        return URLSession.shared.dataTaskPublisher(for: request)
-            .receive(on: DispatchQueue.main)
-            .tryFilter { _, response in
-                guard let response = response as? HTTPURLResponse else {
-                    return false
-                }
-
-                guard (200 ... 299) ~= response.statusCode else {
-                    throw SpendError.message("Please make sure you have the right amount of available funds.")
-                }
-
-                return true
-            }
-            .map { _ in "" }
-            .mapError { $0 as NSError }
-            .eraseToEffect()
-    }
-
     static let mock: SpendEnvironment = .init(mainQueue: .immediate) { _ in
         Effect(value: "")
     }
@@ -83,18 +55,18 @@ public extension SpendEnvironment {
 public let spendReducer: Reducer<SpendState, SpendAction, SpendEnvironment> =
     .init { state, action, environment in
         switch action {
-		case let .spendResponse(.failure(error)):
+        case let .spendResponse(.failure(error)):
 
-			state.spendAlert = AlertState(
-				title: TextState("Error"),
-				message: TextState(error.localizedDescription),
-				dismissButton: .default(
-					TextState("Ok"),
-					action: .send(.dismissAlert)
-				)
-			)
+            state.spendAlert = AlertState(
+                title: TextState("Error"),
+                message: TextState(error.localizedDescription),
+                dismissButton: .default(
+                    TextState("Ok"),
+                    action: .send(.dismissAlert)
+                )
+            )
 
-			return .none
+            return .none
 
         case .fieldsEmptyResponse:
 

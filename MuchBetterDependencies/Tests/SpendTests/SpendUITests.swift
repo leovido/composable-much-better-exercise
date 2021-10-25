@@ -1,9 +1,9 @@
 import Common
 import ComposableArchitecture
 import SnapshotTesting
-@testable import SpendFeature
 import SwiftUI
 import XCTest
+@testable import SpendFeature
 
 final class SpendUITests: XCTestCase {
     func testSpendViewUIEmpty() {
