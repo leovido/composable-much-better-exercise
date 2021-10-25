@@ -36,7 +36,7 @@ public struct BalanceEnvironment {
 
 public extension BalanceEnvironment {
     static let live: BalanceEnvironment = .init {
-        guard let request = Client.shared.makeRequest(endpoint: .balance, httpMethod: .GET, headers: [:]) else {
+        guard let request = Client.shared.makeRequest(endpoint: .balance, httpMethod: .GET) else {
             return Effect(value: Balance(balance: "", currency: .gbp))
         }
 

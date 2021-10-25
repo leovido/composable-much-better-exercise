@@ -26,6 +26,8 @@ public struct TransactionState: Equatable {
     public var transactions: [Transaction]
     public var filteredTransactions: [Transaction] = []
     public var searchText: String
+    public var sort: TransactionSort = .oldToNew
+
     public var viewState: TransactionViewState {
         transactions.isEmpty ? .empty : .nonEmpty
     }
@@ -64,8 +66,7 @@ public extension TransactionEnvironment {
         fetchTransactions: {
             guard let request = Client.shared.makeRequest(
                 endpoint: .transactions,
-                httpMethod: .GET,
-                headers: [:]
+                httpMethod: .GET
             ) else {
                 return Effect(value: [])
             }
@@ -129,30 +130,32 @@ public let transactionReducer: Reducer<
         switch action {
         case let .sortTransactions(newSort):
 
+            state.sort = newSort
+
             switch newSort {
             case .highLowPrice:
-                let sortedTransactions = state.transactions.sorted(by: {
-                    MuchBetterNumberFormatter.number(from: $0.amount) < MuchBetterNumberFormatter.number(from: $1.amount)
-                })
-                state.filteredTransactions = sortedTransactions
-
-                return .none
-            case .lowHighPrice:
                 let sortedTransactions = state.transactions.sorted(by: {
                     MuchBetterNumberFormatter.number(from: $0.amount) > MuchBetterNumberFormatter.number(from: $1.amount)
                 })
                 state.filteredTransactions = sortedTransactions
 
                 return .none
+            case .lowHighPrice:
+                let sortedTransactions = state.transactions.sorted(by: {
+                    MuchBetterNumberFormatter.number(from: $0.amount) < MuchBetterNumberFormatter.number(from: $1.amount)
+                })
+                state.filteredTransactions = sortedTransactions
+
+                return .none
             case .newToOld:
 
-                let sortedTransactions = state.transactions.sorted(by: { $0.date < $1.date })
+                let sortedTransactions = state.transactions.sorted(by: { $0.date > $1.date })
                 state.filteredTransactions = sortedTransactions
 
                 return .none
             case .oldToNew:
 
-                let sortedTransactions = state.transactions.sorted(by: { $0.date > $1.date })
+                let sortedTransactions = state.transactions.sorted(by: { $0.date < $1.date })
                 state.filteredTransactions = sortedTransactions
 
                 return .none
@@ -168,7 +171,8 @@ public let transactionReducer: Reducer<
             }
 
             state.searchText = newSearchText
-            state.filteredTransactions = state.transactions.filter { $0.description.contains(newSearchText) }
+            state.filteredTransactions = state.transactions.filter { $0.description.fuzzyMatch(newSearchText)
+            }
 
             return .none
 
@@ -186,7 +190,9 @@ public let transactionReducer: Reducer<
             state.transactions = newTransactions
             state.filteredTransactions = newTransactions
 
-            return .none
+            return Effect(value: state.sort)
+                .map(TransactionAction.sortTransactions)
+
         case let .receiveTransactions(.failure(error)):
 
             return .none

@@ -42,6 +42,7 @@ public class Client {
 
     public func login() -> AnyPublisher<Token, Error> {
         let components = makeComponents()
+
         guard var url = components.url else {
             fatalError()
         }
@@ -78,8 +79,9 @@ public class Client {
             .eraseToAnyPublisher()
     }
 
-    public func makeRequest(data: Data? = nil, endpoint: Endpoint, httpMethod: Method, headers _: [String: Any]) -> URLRequest? {
+    public func makeRequest(data: Data? = nil, endpoint: Endpoint, httpMethod: Method) -> URLRequest? {
         let components = makeComponents()
+
         guard var url = components.url else {
             return nil
         }
@@ -90,8 +92,8 @@ public class Client {
         request.httpBody = data
         request.httpMethod = httpMethod.rawValue
 
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token.value)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         return request
     }
