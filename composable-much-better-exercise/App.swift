@@ -11,12 +11,10 @@ import SwiftUI
 
 @main
 struct MuchBetterApp: App {
-    @State var isLoggedIn = false
-
     let store: Store<AppState, AppAction> = Store(
         initialState: .init(),
         reducer: appReducer.debug(),
-        environment: .mock
+        environment: .live
     )
 
     var body: some Scene {
