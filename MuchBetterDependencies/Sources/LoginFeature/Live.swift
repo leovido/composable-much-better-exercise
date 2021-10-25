@@ -14,5 +14,5 @@ public extension LoginEnvironment {
         Client.shared.login()
             .mapError { LoginError.message($0.localizedDescription) }
             .eraseToEffect()
-    }
+    } logout: {}
 }

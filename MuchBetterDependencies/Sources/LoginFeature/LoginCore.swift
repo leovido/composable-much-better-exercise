@@ -76,6 +76,9 @@ public let loginReducer: Reducer<
                     action: .send(.dismissAlert)
                 )
             )
+
+            return .none
+
         case .logout:
             return Effect.fireAndForget {
                 environment.logout()
