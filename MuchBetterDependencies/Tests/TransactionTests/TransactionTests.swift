@@ -2,10 +2,10 @@ import Common
 import ComposableArchitecture
 import SnapshotTesting
 import SwiftUI
-@testable import TransactionFeature
 import XCTest
+@testable import TransactionFeature
 
-class TransactionTests: XCTestCase {
+final class TransactionTests: XCTestCase {
     func testFetchTransactions() {
         let store = TestStore(initialState: TransactionState(),
                               reducer: transactionReducer,
@@ -32,6 +32,102 @@ class TransactionTests: XCTestCase {
                 $0.viewState = .nonEmpty
             },
             .receive(.sortTransactions(expectedSort))
+        )
+    }
+
+    func testSortedTransactionsHighLow() {
+        let expectedTransactions = [
+            Transaction(date: Date(), description: "Cricket bet", amount: "200", currency: .gbp),
+            Transaction(date: Date(), description: "Football bet", amount: "500", currency: .gbp),
+        ]
+
+        let store = TestStore(
+            initialState: TransactionState(transactions: expectedTransactions, sort: .highLowPrice),
+            reducer: transactionReducer,
+            environment: TransactionEnvironment.mock
+        )
+
+        let expectedSort = TransactionSort.highLowPrice
+
+        store.assert(
+            .send(.sortTransactions(expectedSort)) {
+                $0.sort = expectedSort
+                $0.filteredTransactions = expectedTransactions
+                    .sorted(by: {
+                        MuchBetterNumberFormatter.number(from: $0.amount) < MuchBetterNumberFormatter.number(from: $1.amount)
+                    })
+            }
+        )
+    }
+
+    func testSortedTransactionsLowHigh() {
+        let expectedTransactions = [
+            Transaction(date: Date(), description: "Football bet", amount: "500", currency: .gbp),
+            Transaction(date: Date(), description: "Cricket bet", amount: "200", currency: .gbp),
+        ]
+
+        let store = TestStore(
+            initialState: TransactionState(transactions: expectedTransactions, sort: .lowHighPrice),
+            reducer: transactionReducer,
+            environment: TransactionEnvironment.mock
+        )
+
+        let expectedSort = TransactionSort.lowHighPrice
+
+        store.assert(
+            .send(.sortTransactions(expectedSort)) {
+                $0.sort = expectedSort
+                $0.filteredTransactions = expectedTransactions
+                    .sorted(by: {
+                        MuchBetterNumberFormatter.number(from: $0.amount) > MuchBetterNumberFormatter.number(from: $1.amount)
+                    })
+            }
+        )
+    }
+
+    func testSortedTransactionsNewOld() {
+        let expectedTransactions = [
+            Transaction(date: Date(), description: "Football bet", amount: "500", currency: .gbp),
+            Transaction(date: Date().advanced(by: 3600), description: "Cricket bet", amount: "200", currency: .gbp),
+        ]
+
+        let store = TestStore(
+            initialState: TransactionState(transactions: expectedTransactions, sort: .newToOld),
+            reducer: transactionReducer,
+            environment: TransactionEnvironment.mock
+        )
+
+        let expectedSort = TransactionSort.newToOld
+
+        store.assert(
+            .send(.sortTransactions(expectedSort)) {
+                $0.sort = expectedSort
+                $0.filteredTransactions = expectedTransactions
+                    .sorted(by: { $0.date > $1.date })
+            }
+        )
+    }
+
+    func testSortedTransactionsOldNew() {
+        let expectedTransactions = [
+            Transaction(date: Date(), description: "Football bet", amount: "500", currency: .gbp),
+            Transaction(date: Date().advanced(by: 3600), description: "Cricket bet", amount: "200", currency: .gbp),
+        ]
+
+        let store = TestStore(
+            initialState: TransactionState(transactions: expectedTransactions, sort: .oldToNew),
+            reducer: transactionReducer,
+            environment: TransactionEnvironment.mock
+        )
+
+        let expectedSort = TransactionSort.oldToNew
+
+        store.assert(
+            .send(.sortTransactions(expectedSort)) {
+                $0.sort = expectedSort
+                $0.filteredTransactions = expectedTransactions
+                    .sorted(by: { $0.date < $1.date })
+            }
         )
     }
 
@@ -110,6 +206,9 @@ class TransactionTests: XCTestCase {
             .receive(.receiveTransactions(.failure(expected))) {
                 $0.transactionAlert = expectedAlert
                 $0.viewState = .empty
+            },
+            .send(.dismissAlert) {
+                $0.transactionAlert = nil
             }
         )
     }
