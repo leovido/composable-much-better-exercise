@@ -11,15 +11,13 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct LoginState: Equatable {
-    public var token: String
+    public var alert: AlertState<LoginAction>?
     public var email: String
     public var password: String
 
-    public init(token: String = "",
-                email: String = "",
+    public init(email: String = "",
                 password: String = "")
     {
-        self.token = token
         self.email = email
         self.password = password
     }
@@ -28,6 +26,7 @@ public struct LoginState: Equatable {
 public enum LoginAction: Equatable {
     case login
     case loginResponse(Result<String, LoginError>)
+    case dismissAlert
 }
 
 public struct LoginEnvironment {
@@ -63,6 +62,19 @@ public let loginReducer: Reducer<
 > =
     .init { state, action, environment in
         switch action {
+        case let .loginResponse(.failure(error)):
+
+            state.alert = .init(
+                title: TextState(""),
+                message: TextState(""),
+                dismissButton: .default(
+                    TextState("Ok"),
+                    action: .send(.dismissAlert)
+                )
+            )
+
+            return .none
+
         case .login:
 
             return environment.login(state.email, state.password)
@@ -71,14 +83,13 @@ public let loginReducer: Reducer<
                 .catchToEffect()
                 .map(LoginAction.loginResponse)
 
-        case let .loginResponse(.success(newToken)):
-            state.token = newToken
+        case .loginResponse:
 
             return .none
 
-        case let .loginResponse(.failure(error)):
+        case .dismissAlert:
 
-            dump(error)
+            state.alert = nil
 
             return .none
         }

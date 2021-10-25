@@ -65,7 +65,7 @@ public struct AppView: View {
 
 struct AppView_Previews: PreviewProvider {
     public static let store: Store<AppState, AppAction> = .init(
-        initialState: .init(loginState: LoginState(token: "")),
+        initialState: .init(loginState: LoginState()),
         reducer: appReducer,
         environment: AppEnvironment.mock
     )

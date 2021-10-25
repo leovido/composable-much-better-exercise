@@ -24,7 +24,7 @@ public enum Method: String {
     case GET
 }
 
-public class Client {
+public final class Client {
     public static let shared = Client()
 
     private init() {}
