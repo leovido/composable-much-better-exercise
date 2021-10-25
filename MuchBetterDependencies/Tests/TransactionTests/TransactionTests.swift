@@ -7,11 +7,11 @@ import XCTest
 
 class TransactionTests: XCTestCase {
     func testFetchTransactions() {
-        let state = TransactionState()
-
-        let store = TestStore(initialState: state,
+        let store = TestStore(initialState: TransactionState(),
                               reducer: transactionReducer,
                               environment: TransactionEnvironment.mock)
+
+        let expectedSort = TransactionSort.oldToNew
 
         let mockTransactions = [
             Transaction(id: UUID().uuidString, date: Date(), description: "Test description", amount: "111.11", currency: .gbp),
@@ -23,11 +23,15 @@ class TransactionTests: XCTestCase {
         }
 
         store.assert(
-            .send(TransactionAction.fetchTransactions),
+            .send(TransactionAction.fetchTransactions) {
+                $0.viewState = .loading
+            },
             .receive(.receiveTransactions(.success(mockTransactions))) {
                 $0.transactions = mockTransactions
                 $0.filteredTransactions = mockTransactions
-            }
+                $0.viewState = .nonEmpty
+            },
+            .receive(.sortTransactions(expectedSort))
         )
     }
 
@@ -41,6 +45,7 @@ class TransactionTests: XCTestCase {
             Transaction(id: UUID().uuidString, date: Date(), description: "Much better transaction", amount: "777.77", currency: .gbp),
         ]
 
+        let expectedSort = TransactionSort.oldToNew
         let expected = initialMockTransactions.last!
 
         /// Here we have full control on what mock transactions we want to return. Realistically, the Date properties created above will be different to the ones created on the actual mock implementation of the `TransactionEnvironment.mock`. This will allow us to have full control on the exact Date that we pass.
@@ -50,11 +55,15 @@ class TransactionTests: XCTestCase {
         }
 
         store.assert(
-            .send(TransactionAction.fetchTransactions),
+            .send(TransactionAction.fetchTransactions) {
+                $0.viewState = .loading
+            },
             .receive(.receiveTransactions(.success(initialMockTransactions))) {
                 $0.transactions = initialMockTransactions
                 $0.filteredTransactions = initialMockTransactions
+                $0.viewState = .nonEmpty
             },
+            .receive(.sortTransactions(expectedSort)),
             .send(.searchTextChanged("M")) {
                 $0.searchText = "M"
                 $0.filteredTransactions = [expected]
@@ -85,11 +94,23 @@ class TransactionTests: XCTestCase {
                               reducer: transactionReducer,
                               environment: failMock)
 
+        let expectedAlert = AlertState(
+            title: TextState("Error"),
+            message: TextState("Error"),
+            dismissButton: .default(TextState("Ok"),
+                                    action: .send(TransactionAction.dismissAlert))
+        )
+
         let expected = TransactionError.message("Error")
 
         store.assert(
-            .send(.fetchTransactions),
-            .receive(.receiveTransactions(.failure(expected)))
+            .send(.fetchTransactions) {
+                $0.viewState = .loading
+            },
+            .receive(.receiveTransactions(.failure(expected))) {
+                $0.transactionAlert = expectedAlert
+                $0.viewState = .empty
+            }
         )
     }
 
