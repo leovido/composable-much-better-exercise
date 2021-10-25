@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "TransactionFeature"
-               BuildableName = "TransactionFeature"
-               BlueprintName = "TransactionFeature"
+               BlueprintIdentifier = "AppFeature"
+               BuildableName = "AppFeature"
+               BlueprintName = "AppFeature"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -62,9 +62,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "TransactionFeature"
-            BuildableName = "TransactionFeature"
-            BlueprintName = "TransactionFeature"
+            BlueprintIdentifier = "AppFeature"
+            BuildableName = "AppFeature"
+            BlueprintName = "AppFeature"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

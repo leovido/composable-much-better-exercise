@@ -23,8 +23,9 @@ public struct AppView: View {
         IfLetStore(store.scope(state: { $0.loginState },
                                action: AppAction.login)) { loginStore in
             LoginView(store: loginStore)
+                .transition(.scale(scale: 2))
         } else: {
-            WithViewStore(store) { _ in
+            WithViewStore(store) { viewStore in
                 TabView {
                     NavigationView {
                         VStack(alignment: .leading) {
@@ -45,6 +46,14 @@ public struct AppView: View {
                         }
                         .background(Color(UIColor.systemGray6))
                         .navigationTitle(Text("Dashboard"))
+                        .toolbar(content: {
+                            Button {
+                                viewStore.send(.logout)
+                            } label: {
+                                Text("Logout")
+                            }
+
+                        })
                     }
                     .tabItem {
                         Image(systemName: "house")
@@ -52,6 +61,14 @@ public struct AppView: View {
                     }
 
                     SpendView(store: store.scope(state: { $0.spendState }, action: AppAction.spend))
+                        .toolbar(content: {
+                            Button {
+                                viewStore.send(.logout)
+                            } label: {
+                                Text("Logout")
+                            }
+
+                        })
                         .tabItem {
                             Image(systemName: "cart.badge.plus")
                             Text("Spend")
