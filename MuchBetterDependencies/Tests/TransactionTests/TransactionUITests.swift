@@ -2,8 +2,8 @@ import Common
 import ComposableArchitecture
 import SnapshotTesting
 import SwiftUI
-@testable import TransactionFeature
 import XCTest
+@testable import TransactionFeature
 
 final class TransactionUITests: XCTestCase {
     func testTransactionList_Empty() {

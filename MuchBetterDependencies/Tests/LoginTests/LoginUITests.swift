@@ -1,8 +1,8 @@
 import ComposableArchitecture
-@testable import LoginFeature
 import SnapshotTesting
 import SwiftUI
 import XCTest
+@testable import LoginFeature
 
 final class LoginUITests: XCTestCase {
     func testLoginUIEmpty() {

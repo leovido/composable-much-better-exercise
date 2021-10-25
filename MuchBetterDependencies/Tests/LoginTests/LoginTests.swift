@@ -1,10 +1,10 @@
 import ComposableArchitecture
-@testable import LoginFeature
 import XCTest
+@testable import LoginFeature
 
 final class LoginTests: XCTestCase {
     func testLogin() {
-        let store = TestStore(initialState: LoginState(token: ""),
+        let store = TestStore(initialState: LoginState(),
                               reducer: loginReducer,
                               environment: LoginEnvironment.mock)
 
@@ -12,36 +12,32 @@ final class LoginTests: XCTestCase {
 
         store.assert(
             .send(.login),
-            .receive(.loginResponse(.success(expected))) {
-                $0.token = expected
-            }
+            .receive(.loginResponse(.success(expected)))
         )
     }
 
-    func testSpendError() {
+    func testLoginError() {
         let failMock = LoginEnvironment.failing
 
-        let store = TestStore(initialState: LoginState(token: ""),
+        let store = TestStore(initialState: LoginState(),
                               reducer: loginReducer,
                               environment: failMock)
 
         let expected = LoginError.message("Login error")
-        let expectedErrorAlert = AlertState(
+        let expectedAlert = AlertState(
             title: TextState("Error"),
             message: TextState("Login error"),
-            buttons: [
-                AlertState.Button.default(
-                    TextState("Ok"),
-                    action: AlertState.ButtonAction.send(LoginAction.dismissLoginAlert)
-                ),
-            ]
+            dismissButton: .default(TextState("Ok"),
+                                    action: .send(LoginAction.dismissAlert))
         )
 
         store.assert(
             .send(.login),
             .receive(.loginResponse(.failure(expected))) {
-                $0.token = ""
-                $0.alert = expectedErrorAlert
+                $0.alert = expectedAlert
+            },
+            .send(.dismissAlert) {
+                $0.alert = nil
             }
         )
     }

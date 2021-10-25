@@ -11,17 +11,14 @@ import SwiftUI
 
 public struct LoginState: Equatable {
     public var alert: AlertState<LoginAction>?
-    public var token: String
     public var email: String
     public var isEmailValid: Bool?
     public var password: String
     public var isPasswordValid: Bool?
 
-    public init(token: String = "",
-                email: String = "",
+    public init(email: String = "",
                 password: String = "")
     {
-        self.token = token
         self.email = email
         self.password = password
     }
@@ -31,6 +28,7 @@ public enum LoginAction: Equatable {
     case logout
     case login
     case loginResponse(Result<String, LoginError>)
+    case dismissAlert
     case dismissLoginAlert
     case emailValidate(String)
     case passwordValidate(String)
@@ -54,14 +52,6 @@ public struct LoginEnvironment {
 }
 
 public extension LoginEnvironment {
-    static let live: LoginEnvironment = .init { _, _ in
-        Client.shared.login()
-            .mapError { LoginError.message($0.localizedDescription) }
-            .eraseToEffect()
-    } logout: {
-        Client.shared.logout()
-    }
-
     static var mock: LoginEnvironment = .init(mainQueue: .immediate) { _, _ in
         Effect(value: "token from server")
     } logout: {}
@@ -76,6 +66,19 @@ public let loginReducer: Reducer<
 > =
     .init { state, action, environment in
         switch action {
+        case let .loginResponse(.failure(error)):
+
+            state.alert = .init(
+                title: TextState("Error"),
+                message: TextState(error.localizedDescription),
+                dismissButton: .default(
+                    TextState("Ok"),
+                    action: .send(.dismissAlert)
+                )
+            )
+
+            return .none
+
         case .logout:
             return Effect.fireAndForget {
                 environment.logout()
@@ -126,19 +129,13 @@ public let loginReducer: Reducer<
                 .catchToEffect()
                 .map(LoginAction.loginResponse)
 
-        case let .loginResponse(.success(newToken)):
-            state.token = newToken
+        case .loginResponse:
 
             return .none
 
-        case let .loginResponse(.failure(error)):
+        case .dismissAlert:
 
-            state.alert = AlertState(
-                title: TextState("Error"),
-                message: TextState(error.localizedDescription),
-                dismissButton: .default(TextState("Ok"),
-                                        action: .send(.dismissLoginAlert))
-            )
+            state.alert = nil
 
             return .none
         }

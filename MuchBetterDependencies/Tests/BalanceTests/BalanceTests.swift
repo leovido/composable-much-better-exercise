@@ -1,7 +1,7 @@
-@testable import BalanceFeature
 import Common
 import ComposableArchitecture
 import XCTest
+@testable import BalanceFeature
 
 final class BalanceTest: XCTestCase {
     func testFetchBalance() {
@@ -21,6 +21,12 @@ final class BalanceTest: XCTestCase {
 
     func testFetchBalanceFail() {
         let failMock = BalanceEnvironment.failing
+        let expectedAlert = AlertState(
+            title: TextState("Error"),
+            message: TextState("Error"),
+            dismissButton: .default(TextState("Ok"),
+                                    action: .send(BalanceAction.dismissAlert))
+        )
 
         let store = TestStore(initialState: BalanceState(balance: "111.11"),
                               reducer: balanceReducer,
@@ -32,6 +38,10 @@ final class BalanceTest: XCTestCase {
             .send(.requestFetchBalance),
             .receive(.responseReceiveFetchBalance(.failure(expected))) {
                 $0.balance = ""
+                $0.balanceAlert = expectedAlert
+            },
+            .send(.dismissAlert) {
+                $0.balanceAlert = nil
             }
         )
     }

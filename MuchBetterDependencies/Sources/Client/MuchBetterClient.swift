@@ -24,7 +24,7 @@ public enum Method: String {
     case GET
 }
 
-public class Client {
+public final class Client {
     public static let shared = Client()
 
     private init() {}
@@ -42,6 +42,7 @@ public class Client {
 
     public func login(email _: String = "", password _: String = "") -> AnyPublisher<Token, Error> {
         let components = makeComponents()
+
         guard var url = components.url else {
             fatalError()
         }
@@ -85,12 +86,9 @@ public class Client {
             .eraseToAnyPublisher()
     }
 
-    public func logout() {
-        token.send("")
-    }
-
-    public func makeRequest(data: Data? = nil, endpoint: Endpoint, httpMethod: Method, headers _: [String: Any]) -> URLRequest? {
+    public func makeRequest(data: Data? = nil, endpoint: Endpoint, httpMethod: Method) -> URLRequest? {
         let components = makeComponents()
+
         guard var url = components.url else {
             return nil
         }
@@ -101,8 +99,8 @@ public class Client {
         request.httpBody = data
         request.httpMethod = httpMethod.rawValue
 
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token.value)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         return request
     }

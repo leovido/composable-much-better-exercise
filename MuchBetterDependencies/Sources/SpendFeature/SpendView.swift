@@ -27,6 +27,9 @@ public struct SpendView: View {
                                     send: SpendAction.descriptionChanged
                                 )
                             )
+                            .autocapitalization(.sentences)
+                            .disableAutocorrection(true)
+
                             TextField(
                                 "Amount", text: viewStore.binding(
                                     get: { $0.amount },
@@ -50,6 +53,10 @@ public struct SpendView: View {
                 }
                 .background(Color(UIColor.systemGray6))
                 .navigationTitle(Text("Spend"))
+                .alert(
+                    self.store.scope(state: \.spendAlert),
+                    dismiss: .dismissAlert
+                )
             }
         }
     }

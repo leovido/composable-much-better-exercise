@@ -17,60 +17,15 @@ public struct LoginView: View {
 
     public var body: some View {
         WithViewStore(store) { viewStore in
-            VStack {
-                Spacer()
-                VStack {
-                    Text("MuchBetter app".uppercased())
-                        .font(.largeTitle)
-                        .fontWeight(.black)
-
-                    Text("with TCA (The Composable Architecture)")
-                        .font(.caption)
+            ProgressView("Logging you in...")
+                .progressViewStyle(CircularProgressViewStyle(tint: .orange))
+                .alert(
+                    self.store.scope(state: \.alert),
+                    dismiss: .dismissAlert
+                )
+                .onAppear {
+                    viewStore.send(.login)
                 }
-                .padding(.bottom, 50)
-
-                TextField("Email", text: viewStore.binding(
-                    get: { $0.email },
-                    send: LoginAction.emailValidate
-                ),
-                prompt: Text("user@muchbetter.com"))
-                    .multilineTextAlignment(.center)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .border(viewStore.isEmailValid == nil ? Color.clear : (viewStore.isEmailValid! ? Color.green : Color.red), width: 1)
-                    .background(Color.white)
-                    .padding([.leading, .trailing])
-                    .keyboardType(.emailAddress)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-
-                SecureField("Password", text: viewStore.binding(
-                    get: { $0.email },
-                    send: LoginAction.passwordValidate
-                ),
-                prompt: Text("········"))
-                    .multilineTextAlignment(.center)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .border(viewStore.isPasswordValid == nil ? Color.clear : (viewStore.isPasswordValid! ? Color.green : Color.red), width: 1)
-                    .padding([.leading, .trailing])
-
-                Button(action: {
-                    withAnimation {
-                        viewStore.send(.login)
-                    }
-                }, label: {
-                    Text("Login")
-                        .foregroundColor(Color.white)
-                })
-                    .padding(10)
-                    .padding([.leading, .trailing], 15)
-                    .background(Color.orange)
-                    .clipShape(Capsule())
-                    .padding()
-
-                Spacer()
-            }
-            .padding()
-            .background(Color(UIColor.systemGray6))
         }
     }
 }

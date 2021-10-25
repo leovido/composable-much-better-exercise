@@ -5,12 +5,12 @@
 //  Created by Christian Leovido on 18/10/2021.
 //
 
-@testable import BalanceFeature
 import Common
 import ComposableArchitecture
 import SnapshotTesting
 import SwiftUI
 import XCTest
+@testable import BalanceFeature
 
 final class BalanceUITests: XCTestCase {
     func testBalanceViewUIAmount() {

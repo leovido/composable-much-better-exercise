@@ -20,22 +20,28 @@ public enum TransactionSort {
 public enum TransactionViewState: String {
     case empty
     case nonEmpty
+    case loading
 }
 
 public struct TransactionState: Equatable {
+    public var transactionAlert: AlertState<TransactionAction>?
     public var transactions: [Transaction]
     public var filteredTransactions: [Transaction] = []
     public var searchText: String
-    public var viewState: TransactionViewState {
-        transactions.isEmpty ? .empty : .nonEmpty
-    }
+    public var sort: TransactionSort
+
+    public var viewState: TransactionViewState
 
     public init(transactions: [Transaction] = [],
-                searchText: String = "")
+                searchText: String = "",
+                viewState: TransactionViewState = .empty,
+                sort: TransactionSort = .oldToNew)
     {
         self.transactions = transactions
         filteredTransactions = transactions
         self.searchText = searchText
+        self.viewState = viewState
+        self.sort = sort
     }
 }
 
@@ -44,6 +50,7 @@ public enum TransactionAction: Equatable {
     case fetchTransactions
     case receiveTransactions(Result<[Transaction], TransactionError>)
     case sortTransactions(TransactionSort)
+    case dismissAlert
 }
 
 public struct TransactionEnvironment {
@@ -59,47 +66,6 @@ public struct TransactionEnvironment {
 }
 
 public extension TransactionEnvironment {
-    static let live: TransactionEnvironment = .init(
-        mainQueue: .main,
-        fetchTransactions: {
-            guard let request = Client.shared.makeRequest(
-                endpoint: .transactions,
-                httpMethod: .GET,
-                headers: [:]
-            ) else {
-                return Effect(value: [])
-            }
-
-            return URLSession.shared.dataTaskPublisher(for: request)
-                .receive(on: DispatchQueue.main)
-                .map { data, response in
-                    guard let response = response as? HTTPURLResponse else {
-                        return Data()
-                    }
-
-                    guard (200 ..< 399) ~= response.statusCode else {
-                        return Data()
-                    }
-
-                    return data
-                }
-                .decode(type: [Transaction].self, decoder: transactionDecoder)
-                .map {
-                    $0.map {
-                        let amountFormatted = MuchBetterNumberFormatter.formatCurrency($0)
-
-                        return Transaction(id: $0.id,
-                                           date: $0.date,
-                                           description: $0.description,
-                                           amount: amountFormatted,
-                                           currency: $0.currency)
-                    }
-                }
-                .mapError { TransactionError.message($0.localizedDescription) }
-                .eraseToEffect()
-        }
-    )
-
     static let mock: TransactionEnvironment = .init(
         mainQueue: .immediate,
         fetchTransactions: {
@@ -127,32 +93,55 @@ public let transactionReducer: Reducer<
     .init { state, action, environment in
 
         switch action {
+        case let .receiveTransactions(.failure(error)):
+
+            state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
+
+            state.transactionAlert = .init(
+                title: TextState("Error"),
+                message: TextState(error.localizedDescription),
+                dismissButton: .default(
+                    TextState("Ok"),
+                    action: .send(.dismissAlert)
+                )
+            )
+
+            return .none
+
+        case .dismissAlert:
+
+            state.transactionAlert = nil
+
+            return .none
+
         case let .sortTransactions(newSort):
+
+            state.sort = newSort
 
             switch newSort {
             case .highLowPrice:
-                let sortedTransactions = state.transactions.sorted(by: {
-                    MuchBetterNumberFormatter.number(from: $0.amount) < MuchBetterNumberFormatter.number(from: $1.amount)
-                })
-                state.filteredTransactions = sortedTransactions
-
-                return .none
-            case .lowHighPrice:
                 let sortedTransactions = state.transactions.sorted(by: {
                     MuchBetterNumberFormatter.number(from: $0.amount) > MuchBetterNumberFormatter.number(from: $1.amount)
                 })
                 state.filteredTransactions = sortedTransactions
 
                 return .none
+            case .lowHighPrice:
+                let sortedTransactions = state.transactions.sorted(by: {
+                    MuchBetterNumberFormatter.number(from: $0.amount) < MuchBetterNumberFormatter.number(from: $1.amount)
+                })
+                state.filteredTransactions = sortedTransactions
+
+                return .none
             case .newToOld:
 
-                let sortedTransactions = state.transactions.sorted(by: { $0.date < $1.date })
+                let sortedTransactions = state.transactions.sorted(by: { $0.date > $1.date })
                 state.filteredTransactions = sortedTransactions
 
                 return .none
             case .oldToNew:
 
-                let sortedTransactions = state.transactions.sorted(by: { $0.date > $1.date })
+                let sortedTransactions = state.transactions.sorted(by: { $0.date < $1.date })
                 state.filteredTransactions = sortedTransactions
 
                 return .none
@@ -168,15 +157,19 @@ public let transactionReducer: Reducer<
             }
 
             state.searchText = newSearchText
-            state.filteredTransactions = state.transactions.filter { $0.description.uppercased().contains(newSearchText.uppercased()) }
+            state.filteredTransactions = state.transactions.filter { $0.description.fuzzyMatch(newSearchText)
+            }
 
             return .none
 
         case .fetchTransactions:
 
+            state.viewState = .loading
+
             return environment.fetchTransactions()
                 .receive(on: environment.mainQueue)
-                .mapError { TransactionError.message($0.localizedDescription) }
+                .mapError { TransactionError.message($0.localizedDescription)
+                }
                 .catchToEffect()
                 .map(TransactionAction.receiveTransactions)
                 .eraseToEffect()
@@ -186,10 +179,9 @@ public let transactionReducer: Reducer<
             state.transactions = newTransactions
             state.filteredTransactions = newTransactions
 
-            return .none
+            state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
 
-        case let .receiveTransactions(.failure(error)):
-
-            return .none
+            return Effect(value: state.sort)
+                .map(TransactionAction.sortTransactions)
         }
     }

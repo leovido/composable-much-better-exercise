@@ -14,7 +14,7 @@ struct MuchBetterApp: App {
     let store: Store<AppState, AppAction> = Store(
         initialState: .init(),
         reducer: appReducer.debug(),
-        environment: .mock
+        environment: .live
     )
 
     var body: some Scene {

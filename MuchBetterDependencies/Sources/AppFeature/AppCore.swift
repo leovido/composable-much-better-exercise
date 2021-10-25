@@ -68,7 +68,7 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
             state: \.loginState,
             action: /AppAction.login,
             environment: { _ in
-                LoginEnvironment.mock
+                LoginEnvironment.live
             }
         ),
     balanceReducer
@@ -76,7 +76,7 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
             state: \.balanceState,
             action: /AppAction.balance,
             environment: { _ in
-                BalanceEnvironment.mock
+                BalanceEnvironment.live
             }
         ),
     transactionReducer
@@ -84,7 +84,7 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
             state: \.transactionState,
             action: /AppAction.transaction,
             environment: { _ in
-                TransactionEnvironment.mock
+                TransactionEnvironment.live
             }
         ),
     spendReducer
@@ -92,7 +92,7 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
             state: \.spendState,
             action: /AppAction.spend,
             environment: { _ in
-                SpendEnvironment.mock
+                SpendEnvironment.live
             }
         )
 
@@ -104,15 +104,9 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
         return .none
     case .balance:
         return .none
-    case let .login(loginAction):
-
-        switch loginAction {
-        case let .loginResponse(.success(newToken)):
-            state.loginState = nil
-
-            return .none
-        default: return .none
-        }
+    case .login:
+        state.loginState = nil
+        return .none
     case .spend:
         return .none
     case .transaction:

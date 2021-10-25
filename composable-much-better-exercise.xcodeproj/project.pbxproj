@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2D04ECB6271DCDF700FEF969 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D7000202715A409007213EB /* Assets.xcassets */; };
 		2D70001D2715A407007213EB /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D70001C2715A407007213EB /* App.swift */; };
-		2D70001F2715A407007213EB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D70001E2715A407007213EB /* ContentView.swift */; };
 		2D7000242715A409007213EB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D7000232715A409007213EB /* Preview Assets.xcassets */; };
 		2D70004B2715AB84007213EB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 2D70004A2715AB84007213EB /* AppFeature */; };
 /* End PBXBuildFile section */
@@ -17,7 +16,6 @@
 /* Begin PBXFileReference section */
 		2D7000192715A407007213EB /* composable-much-better-exercise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "composable-much-better-exercise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D70001C2715A407007213EB /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		2D70001E2715A407007213EB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2D7000202715A409007213EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2D7000232715A409007213EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2D7000462715A686007213EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -55,9 +53,8 @@
 		2D70001B2715A407007213EB /* composable-much-better-exercise */ = {
 			isa = PBXGroup;
 			children = (
-				2D7000462715A686007213EB /* Info.plist */,
 				2D70001C2715A407007213EB /* App.swift */,
-				2D70001E2715A407007213EB /* ContentView.swift */,
+				2D7000462715A686007213EB /* Info.plist */,
 				2D7000202715A409007213EB /* Assets.xcassets */,
 				2D7000222715A409007213EB /* Preview Content */,
 			);
@@ -164,7 +161,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftformat >/dev/null; then\nswiftformat . --swiftversion 5.5\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "if which swiftformat >/dev/null; then\nswiftformat . --disable sortedImports --swiftversion 5.5\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -173,7 +170,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D70001F2715A407007213EB /* ContentView.swift in Sources */,
 				2D70001D2715A407007213EB /* App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
