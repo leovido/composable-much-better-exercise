@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Currency: String, Decodable, Hashable {
+public enum Currency: String, Codable, Hashable {
     case gbp = "GBP"
 }
 

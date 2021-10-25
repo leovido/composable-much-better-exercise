@@ -92,6 +92,10 @@ public struct TransactionView: View {
                 ),
                 prompt: "Search transactions"
             )
+            .alert(
+                self.store.scope(state: \.transactionAlert),
+                dismiss: .dismissAlert
+            )
             .onAppear {
                 viewStore.send(.fetchTransactions)
             }

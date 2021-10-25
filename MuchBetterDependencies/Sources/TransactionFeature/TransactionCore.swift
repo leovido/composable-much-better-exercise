@@ -20,24 +20,26 @@ public enum TransactionSort {
 public enum TransactionViewState: String {
     case empty
     case nonEmpty
+    case loading
 }
 
 public struct TransactionState: Equatable {
+    public var transactionAlert: AlertState<TransactionAction>?
     public var transactions: [Transaction]
     public var filteredTransactions: [Transaction] = []
     public var searchText: String
     public var sort: TransactionSort = .oldToNew
 
-    public var viewState: TransactionViewState {
-        transactions.isEmpty ? .empty : .nonEmpty
-    }
+    public var viewState: TransactionViewState
 
     public init(transactions: [Transaction] = [],
-                searchText: String = "")
+                searchText: String = "",
+                viewState: TransactionViewState = .empty)
     {
         self.transactions = transactions
         filteredTransactions = transactions
         self.searchText = searchText
+        self.viewState = viewState
     }
 }
 
@@ -46,6 +48,7 @@ public enum TransactionAction: Equatable {
     case fetchTransactions
     case receiveTransactions(Result<[Transaction], TransactionError>)
     case sortTransactions(TransactionSort)
+    case dismissAlert
 }
 
 public struct TransactionEnvironment {
@@ -128,6 +131,27 @@ public let transactionReducer: Reducer<
     .init { state, action, environment in
 
         switch action {
+        case let .receiveTransactions(.failure(error)):
+
+            state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
+
+            state.transactionAlert = .init(
+                title: TextState("Error"),
+                message: TextState(error.localizedDescription),
+                dismissButton: .default(
+                    TextState("Ok"),
+                    action: .send(.dismissAlert)
+                )
+            )
+
+            return .none
+
+        case .dismissAlert:
+
+            state.transactionAlert = nil
+
+            return .none
+
         case let .sortTransactions(newSort):
 
             state.sort = newSort
@@ -178,9 +202,12 @@ public let transactionReducer: Reducer<
 
         case .fetchTransactions:
 
+            state.viewState = .loading
+
             return environment.fetchTransactions()
                 .receive(on: environment.mainQueue)
-                .mapError { TransactionError.message($0.localizedDescription) }
+                .mapError { TransactionError.message($0.localizedDescription)
+                }
                 .catchToEffect()
                 .map(TransactionAction.receiveTransactions)
                 .eraseToEffect()
@@ -190,11 +217,9 @@ public let transactionReducer: Reducer<
             state.transactions = newTransactions
             state.filteredTransactions = newTransactions
 
+            state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
+
             return Effect(value: state.sort)
                 .map(TransactionAction.sortTransactions)
-
-        case let .receiveTransactions(.failure(error)):
-
-            return .none
         }
     }

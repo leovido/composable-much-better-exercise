@@ -19,6 +19,10 @@ public struct LoginView: View {
         WithViewStore(store) { viewStore in
             ProgressView("Logging you in...")
                 .progressViewStyle(CircularProgressViewStyle(tint: .orange))
+                .alert(
+                    self.store.scope(state: \.alert),
+                    dismiss: .dismissAlert
+                )
                 .onAppear {
                     viewStore.send(.login)
                 }

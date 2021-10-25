@@ -48,6 +48,10 @@ public struct BalanceView: View {
                     )
             )
             .padding()
+            .alert(
+                self.store.scope(state: \.balanceAlert),
+                dismiss: .dismissAlert
+            )
             .onAppear {
                 viewStore.send(.requestFetchBalance)
             }

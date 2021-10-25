@@ -10,6 +10,7 @@ import Common
 import ComposableArchitecture
 
 public struct BalanceState: Equatable {
+    public var balanceAlert: AlertState<BalanceAction>?
     public var balance: String
 
     public init(balance: String) {
@@ -20,6 +21,7 @@ public struct BalanceState: Equatable {
 public enum BalanceAction: Equatable {
     case requestFetchBalance
     case responseReceiveFetchBalance(Result<Balance, BalanceError>)
+    case dismissAlert
 }
 
 public struct BalanceEnvironment {
@@ -71,6 +73,27 @@ public extension BalanceEnvironment {
 
 public let balanceReducer: Reducer<BalanceState, BalanceAction, BalanceEnvironment> = .init { state, action, environment in
     switch action {
+    case let .responseReceiveFetchBalance(.failure(error)):
+
+        state.balance = ""
+
+        state.balanceAlert = .init(
+            title: TextState("Error"),
+            message: TextState(error.localizedDescription),
+            dismissButton: .default(
+                TextState("Ok"),
+                action: .send(.dismissAlert)
+            )
+        )
+
+        return .none
+
+    case .dismissAlert:
+
+        state.balanceAlert = nil
+
+        return .none
+
     case .requestFetchBalance:
 
         return environment.fetchBalance()
@@ -85,12 +108,6 @@ public let balanceReducer: Reducer<BalanceState, BalanceAction, BalanceEnvironme
     case let .responseReceiveFetchBalance(.success(balanceModel)):
 
         state.balance = MuchBetterNumberFormatter.formatCurrency(balanceModel)
-
-        return .none
-
-    case let .responseReceiveFetchBalance(.failure(error)):
-
-        state.balance = ""
 
         return .none
     }
