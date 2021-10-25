@@ -7,14 +7,14 @@
 
 import Foundation
 
-public struct Transaction: Identifiable, Decodable, Hashable, AmountRepresentable {
+public struct Transaction: Identifiable, Codable, Hashable, AmountRepresentable {
     public let id: String
     public let date: Date
     public let description: String
     public let amount: String
     public let currency: Currency
 
-    public init(id: String, date: Date, description: String, amount: String, currency: Currency) {
+    public init(id: String = UUID().uuidString, date: Date, description: String, amount: String, currency: Currency) {
         self.id = id
         self.date = date
         self.description = description
