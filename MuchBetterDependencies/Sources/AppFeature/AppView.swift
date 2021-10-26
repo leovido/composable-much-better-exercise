@@ -35,6 +35,7 @@ public struct AppView: View {
                                     action: AppAction.balance
                                 )
                             )
+
                             TransactionView(
                                 store: store.scope(
                                     state: { $0.transactionState },
