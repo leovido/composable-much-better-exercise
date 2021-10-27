@@ -54,4 +54,3 @@ These components are stored in folders here: [MuchBetterDependencies > Sources](
   <img alt="SpendView" src="https://user-images.githubusercontent.com/18484997/137920444-053aa9db-49de-4c52-a65e-6011e7761eb4.png" width="30%" >
   
   </div>
-

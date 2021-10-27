@@ -101,7 +101,7 @@ public let loginReducer: Reducer<
             let isEmailValid = email.contains("@")
 
             return Effect(value: isEmailValid)
-                .debounce(id: EmailCancelId(), for: 0.5, scheduler: RunLoop.main)
+                .debounce(id: EmailCancelId(), for: 0.5, scheduler: environment.mainQueue)
                 .map(LoginAction.responseEmailValidate)
                 .eraseToEffect()
 
@@ -111,7 +111,7 @@ public let loginReducer: Reducer<
             let isPasswordValid = password.count >= 6
 
             return Effect(value: isPasswordValid)
-                .debounce(id: PasswordCancelId(), for: 0.5, scheduler: RunLoop.main)
+                .debounce(id: PasswordCancelId(), for: 0.5, scheduler: environment.mainQueue)
                 .map(LoginAction.responsePasswordValidate)
                 .eraseToEffect()
 
