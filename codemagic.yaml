@@ -1,0 +1,22 @@
+workflows:
+  unit-tests:
+    environment:
+      xcode: 13.0
+    scripts:
+      - name: Build
+        script: |
+          xcodebuild build-for-testing \
+          -workspace composable-much-better-exercise.xcworkspace \
+          -list \
+          -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      - name: Run unit tests
+        script: |
+          xcodebuild test-without-building \
+          -workspace composable-much-better-exercise.xcworkspace \
+          -scheme "AllTests" \
+          -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        test_report: build/ios/test/*.xml

@@ -44,7 +44,7 @@ public struct SpendView: View {
                             Button {
                                 viewStore.send(.spendRequest)
                             } label: {
-                                Text("Create transaction")
+                                Text("Order")
                             }
                         }
                     }
