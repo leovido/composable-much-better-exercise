@@ -2,6 +2,9 @@ workflows:
   unit-tests:
     environment:
       xcode: 13.0
+    cache:
+      cache_paths:
+        - "~/Library/Caches/org.swift.swiftpm/"
     scripts:
       - name: Build
         script: |
@@ -19,7 +22,6 @@ workflows:
           -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        test_report: build/ios/test/*.xml
   spend-unit-tests:
     environment:
       xcode: 13.0
@@ -40,7 +42,6 @@ workflows:
           -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        test_report: build/ios/test/*.xml
   transaction-unit-tests:
     environment:
       xcode: 13.0
