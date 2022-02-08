@@ -7,7 +7,7 @@ workflows:
         script: |
           xcodebuild build-for-testing \
           -workspace composable-much-better-exercise.xcworkspace \
-          -list \
+          -scheme "AllTests" \
           -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
