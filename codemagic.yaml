@@ -20,46 +20,18 @@ workflows:
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
         test_report: build/ios/test/*.xml
-      - name: Spend module
+  spend-unit-tests:
+    environment:
+      xcode: 13.0
+    scripts:
+      - name: Build
         script: |
-          xcodebuild test-without-building \
+          xcodebuild build-for-testing \
           -workspace composable-much-better-exercise.xcworkspace \
           -scheme "SpendTests" \
           -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        test_report: build/ios/test/*.xml
-      - name: Balance module
-        script: |
-          xcodebuild test-without-building \
-          -workspace composable-much-better-exercise.xcworkspace \
-          -scheme "BalanceTests" \
-          -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        test_report: build/ios/test/*.xml
-      - name: Transaction module
-        script: |
-          xcodebuild test-without-building \
-          -workspace composable-much-better-exercise.xcworkspace \
-          -scheme "TransactionTests" \
-          -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        test_report: build/ios/test/*.xml
-      - name: Login module
-        script: |
-          xcodebuild test-without-building \
-          -workspace composable-much-better-exercise.xcworkspace \
-          -scheme "LoginTests" \
-          -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        test_report: build/ios/test/*.xml
-  spend-unit-tests:
-    environment:
-      xcode: 13.0
-    scripts:
       - name: Spend module
         script: |
           xcodebuild test-without-building \
