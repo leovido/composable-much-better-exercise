@@ -2,6 +2,8 @@ workflows:
   unit-tests:
     environment:
       xcode: 13.0
+      groups:
+        - sonar
     cache:
       cache_paths:
         - "~/Library/Caches/org.swift.swiftpm/"
@@ -14,6 +16,25 @@ workflows:
           -destination "platform=iOS Simulator,OS=15.0,name=iPhone 13" \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      - name: Convert coverage report to Sonarqube format
+        script: |             
+          bash xccov-to-sonarqube-generic.sh Build/Logs/Test/*.xcresult/ > sonarqube-generic-coverage.xml
+      - name: Generate and upload code analysis report
+        script: |  
+          export PATH=$PATH:$FCI_BUILD_DIR/sonar-scanner/bin
+          
+          sonar-scanner \
+          -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+          -Dsonar.organization=$SONAR_ORG_KEY \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=$SONAR_TOKEN \
+          -Dsonar.projectVersion=1.0.0 \
+          -Dsonar.sources=. \
+          -Dsonar.cfamily.build-wrapper-output.bypass=true \
+          -Dsonar.coverageReportPaths=sonarqube-generic-coverage.xml \
+          -Dsonar.c.file.suffixes=- \
+          -Dsonar.cpp.file.suffixes=- \
+          -Dsonar.objc.file.suffixes=- \
   spend-unit-tests:
     environment:
       xcode: 13.0
