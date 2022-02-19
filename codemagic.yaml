@@ -18,7 +18,7 @@ workflows:
           CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
       - name: Convert coverage report to Sonarqube format
         script: |             
-          bash xccov-to-sonarqube-generic.sh Build/Logs/Test/*.xcresult/ > sonarqube-generic-coverage.xml
+          bash xccov-to-sonarqube-generic.sh /Users/builder/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult/ > sonarqube-generic-coverage.xml
       - name: Generate and upload code analysis report
         script: |  
           export PATH=$PATH:$FCI_BUILD_DIR/sonar-scanner/bin
