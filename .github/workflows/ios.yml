@@ -2,9 +2,9 @@ name: iOS starter workflow
 
 on:
   push:
-    branches: [ main ]
+    branches: [ much-better-exercise ]
   pull_request:
-    branches: [ main ]
+    branches: [ much-better-exercise ]
 
 jobs:
   build:
