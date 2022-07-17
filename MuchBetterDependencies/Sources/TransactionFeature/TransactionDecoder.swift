@@ -8,8 +8,8 @@
 import Foundation
 
 public var transactionDecoder: JSONDecoder {
-    let dec = JSONDecoder()
-    dec.dateDecodingStrategy = .iso8601
+  let dec = JSONDecoder()
+  dec.dateDecodingStrategy = .iso8601
 
-    return dec
+  return dec
 }

@@ -8,21 +8,21 @@
 import Foundation
 
 public extension String {
-    func fuzzyMatch(_ string: String) -> Bool {
-        let lowercased = string.lowercased()
+  func fuzzyMatch(_ string: String) -> Bool {
+    let lowercased = string.lowercased()
 
-        let words = map { $0.lowercased() }
-            .joined()
-            .components(separatedBy: " ")
+    let words = map { $0.lowercased() }
+      .joined()
+      .components(separatedBy: " ")
 
-        for (_, word) in words.enumerated() {
-            if word == lowercased || word.contains(lowercased) {
-                return true
-            } else {
-                continue
-            }
-        }
-
-        return false
+    for word in words {
+      if word == lowercased || word.contains(lowercased) {
+        return true
+      } else {
+        continue
+      }
     }
+
+    return false
+  }
 }

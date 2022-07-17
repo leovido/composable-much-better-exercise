@@ -8,17 +8,23 @@
 import Foundation
 
 public struct Transaction: Identifiable, Codable, Hashable, AmountRepresentable {
-    public let id: String
-    public let date: Date
-    public let description: String
-    public let amount: String
-    public let currency: Currency
+  public let id: String
+  public let date: Date
+  public let description: String
+  public let amount: String
+  public let currency: Currency
 
-    public init(id: String = UUID().uuidString, date: Date, description: String, amount: String, currency: Currency) {
-        self.id = id
-        self.date = date
-        self.description = description
-        self.amount = amount
-        self.currency = currency
-    }
+  public init(
+    id: String = UUID().uuidString,
+    date: Date,
+    description: String,
+    amount: String,
+    currency: Currency
+  ) {
+    self.id = id
+    self.date = date
+    self.description = description
+    self.amount = amount
+    self.currency = currency
+  }
 }

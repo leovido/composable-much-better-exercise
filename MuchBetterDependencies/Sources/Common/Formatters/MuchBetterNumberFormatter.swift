@@ -8,33 +8,35 @@
 import Foundation
 
 public enum MuchBetterNumberFormatter {
-    public static func formatCurrency(_ model: AmountRepresentable) -> String {
-        let nf = NumberFormatter()
+  public static func formatCurrency(_ model: AmountRepresentable) -> String {
+    let numberFormatter = NumberFormatter()
 
-        nf.locale = Locale.current
-        nf.usesGroupingSeparator = true
-        nf.currencySymbol = model.currency.description
-        nf.numberStyle = .currency
+    numberFormatter.locale = Locale.current
+    numberFormatter.usesGroupingSeparator = true
+    numberFormatter.currencySymbol = model.currency.description
+    numberFormatter.numberStyle = .currency
 
-        guard let number = Float(model.amount) else {
-            return ""
-        }
-
-        return nf.string(from: NSNumber(value: number)) ?? ""
+    guard let number = Float(model.amount)
+    else {
+      return ""
     }
 
-    public static func number(from string: String) -> Float {
-        let nf = NumberFormatter()
+    return numberFormatter.string(from: NSNumber(value: number)) ?? ""
+  }
 
-        nf.locale = Locale.current
-        nf.usesGroupingSeparator = true
-        nf.currencySymbol = "£"
-        nf.numberStyle = .currency
+  public static func number(from string: String) -> Float {
+    let numberFormatter = NumberFormatter()
 
-        guard let number = nf.number(from: string) else {
-            return 0
-        }
+    numberFormatter.locale = Locale.current
+    numberFormatter.usesGroupingSeparator = true
+    numberFormatter.currencySymbol = "£"
+    numberFormatter.numberStyle = .currency
 
-        return Float(truncating: number)
+    guard let number = numberFormatter.number(from: string)
+    else {
+      return 0
     }
+
+    return Float(truncating: number)
+  }
 }

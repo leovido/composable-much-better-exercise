@@ -8,6 +8,6 @@
 import Foundation
 
 public enum Constants {
-    public static let scheme = "https"
-    public static let host = "interviewer-api.herokuapp.com"
+  public static let scheme = "https"
+  public static let host = "interviewer-api.herokuapp.com"
 }

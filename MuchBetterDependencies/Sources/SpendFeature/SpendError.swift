@@ -8,14 +8,14 @@
 import Foundation
 
 public enum SpendError: Error {
-    case message(String)
+  case message(String)
 }
 
 extension SpendError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case let .message(message):
-            return message
-        }
+  public var errorDescription: String? {
+    switch self {
+    case let .message(message):
+      return message
     }
+  }
 }
