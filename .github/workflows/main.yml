@@ -17,7 +17,7 @@ jobs:
       - name: GitHub Action for SwiftLint with --strict
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
-          args: --strict
+          args: --disable sortedImports --swiftversion 5.7
       - name: GitHub Action for SwiftLint (Only files changed in the PR)
         uses: norio-nomura/action-swiftlint@3.2.1
         env:
