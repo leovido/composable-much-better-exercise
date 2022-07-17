@@ -1,0 +1,7 @@
+disabled_rules:
+- trailing_comma
+
+excluded:
+- UITests
+
+reporter: "xcode"
