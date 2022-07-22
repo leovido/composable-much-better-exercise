@@ -8,10 +8,10 @@
 import Foundation
 
 public extension JSONEncoder {
-    static let customEncoder: JSONEncoder = {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
+  static let customEncoder: JSONEncoder = {
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .iso8601
 
-        return encoder
-    }()
+    return encoder
+  }()
 }

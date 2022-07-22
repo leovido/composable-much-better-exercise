@@ -8,14 +8,14 @@
 import Foundation
 
 public enum TransactionError: Error, Hashable {
-    case message(String)
+  case message(String)
 }
 
 extension TransactionError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case let .message(message):
-            return message
-        }
+  public var errorDescription: String? {
+    switch self {
+    case let .message(message):
+      return message
     }
+  }
 }

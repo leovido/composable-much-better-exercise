@@ -10,9 +10,9 @@ import ComposableArchitecture
 import Foundation
 
 public extension LoginEnvironment {
-    static let live: LoginEnvironment = .init { _, _ in
-        Client.shared.login()
-            .mapError { LoginError.message($0.localizedDescription) }
-            .eraseToEffect()
-    } logout: {}
+  static let live: LoginEnvironment = .init { _, _ in
+    Client.shared.login()
+      .mapError { LoginError.message($0.localizedDescription) }
+      .eraseToEffect()
+  } logout: {}
 }
