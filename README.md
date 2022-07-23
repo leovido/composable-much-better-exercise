@@ -2,7 +2,9 @@
 <div style="block: inline">
     <img alt="AppView for composable-much-better-exercise; Christian Ray Leovido" src="https://user-images.githubusercontent.com/18484997/137935353-07ccb47c-6bd3-4906-9bbf-4bc362f2d4ba.png" width="30%">
     <img alt="LoginView for composable-much-better-exercise; Christian Ray Leovido" src="https://user-images.githubusercontent.com/18484997/138886899-856f2c22-4c6c-4ac4-84a3-40e6fc4faa02.png" width="30%">
- </div>
+    <img alt="LoginView for composable-much-better-exercise; Christian Ray Leovido" src="https://github.com/kuriishu27/composable-much-better-exercise/blob/main/screenshots/en-US/iPhone%2013-Home_framed.png" width="30%">
+</div>
+
 
 # composable-much-better-exercise (TCA) [![Swift Version](https://img.shields.io/badge/swift-5.5-orange)](https://github.com/apple/swift) ![iOS version](https://img.shields.io/badge/iOS%20version-15.0-blue) ![architecture](https://img.shields.io/badge/architecture-TCA-brightgreen) ![Follow](https://img.shields.io/twitter/follow/c_leovido?style=social)
 
