@@ -14,6 +14,7 @@
 		47D8D4D3288387D3003C7A56 /* UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8D4D2288387D3003C7A56 /* UITests.swift */; };
 		47D8D4D5288387D3003C7A56 /* UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8D4D4288387D3003C7A56 /* UITestsLaunchTests.swift */; };
 		47D8D4DC28838825003C7A56 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8D4DB28838825003C7A56 /* SnapshotHelper.swift */; };
+		B94E92852C653004008ED708 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = B94E92842C653004008ED708 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D70004B2715AB84007213EB /* AppFeature in Frameworks */,
+				B94E92852C653004008ED708 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +134,7 @@
 			name = "composable-much-better-exercise";
 			packageProductDependencies = (
 				2D70004A2715AB84007213EB /* AppFeature */,
+				B94E92842C653004008ED708 /* ComposableArchitecture */,
 			);
 			productName = "composable-much-better-exercise";
 			productReference = 2D7000192715A407007213EB /* composable-much-better-exercise.app */;
@@ -183,6 +186,9 @@
 				Base,
 			);
 			mainGroup = 2D7000102715A407007213EB;
+			packageReferences = (
+				B94E927D2C652E36008ED708 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			productRefGroup = 2D70001A2715A407007213EB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -412,8 +418,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -443,8 +449,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -527,10 +533,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		B94E927D2C652E36008ED708 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.12.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		2D70004A2715AB84007213EB /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;
+		};
+		B94E92842C653004008ED708 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B94E927D2C652E36008ED708 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
