@@ -54,5 +54,4 @@ public struct BalanceView: View {
 		initialState: .init(balance: ""),
 		reducer: { Balance() }
 	))
-	.previewLayout(.sizeThatFits)
 }

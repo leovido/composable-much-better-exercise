@@ -110,6 +110,7 @@ let package = Package(
       name: "LoginFeature",
       dependencies: [
         "Client",
+				.product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
       ]
     ),
     .testTarget(

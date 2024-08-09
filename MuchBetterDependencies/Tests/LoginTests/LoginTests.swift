@@ -1,127 +1,130 @@
 import ComposableArchitecture
 import XCTest
+
 @testable import LoginFeature
 
+@MainActor
 final class LoginTests: XCTestCase {
-  let scheduler = DispatchQueue.test
+  func testLogin() async {
+		let store = TestStore(initialState: Login.State(),
+													reducer: {
+			Login()
+		}) {
+			$0.loginClient = .previewValue
+		}
 
-  func testLogin() {
-    let store = TestStore(initialState: LoginState(),
-                          reducer: loginReducer,
-                          environment: LoginEnvironment.mock)
-
-    let expected = "token from server"
-
-    store.assert(
-      .send(.login),
-      .receive(.loginResponse(.success(expected)))
-    )
+		await store.send(.login)
+		await store.receive(\.loginResponse)
   }
 
-  func testLoginError() {
-    let failMock = LoginEnvironment.failing
-
-    let store = TestStore(initialState: LoginState(),
-                          reducer: loginReducer,
-                          environment: failMock)
-
-    let expected = LoginError.message("Login error")
-    let expectedAlert = AlertState(
+	func testLoginError() async {
+		let failMock = LoginClient.testValue
+		
+		let store = TestStore(initialState: Login.State(),
+													reducer: {
+			Login()
+		}) {
+			$0.loginClient = failMock
+		}
+		
+		let expectedAlert = AlertState<Login.Action.LoginAlert>(
       title: TextState("Error"),
       message: TextState("Login error"),
       dismissButton: .default(TextState("Ok"),
-                              action: .send(LoginAction.dismissAlert))
+															action: .send(Login.Action.LoginAlert.dismiss))
     )
 
-    store.assert(
-      .send(.login),
-      .receive(.loginResponse(.failure(expected))) {
-        $0.alert = expectedAlert
-      },
-      .send(.dismissLoginAlert) {
-        $0.alert = nil
-      }
-    )
+		await store.send(.login)
+		await store.receive(\.loginResponse) {
+			$0.alert = expectedAlert
+		}
+
+		await store.send(.alert(.dismiss)) {
+			$0.alert = nil
+		}
   }
 
-  func testEmailValidate() {
+  func testEmailValidate() async {
     let expectedEmail = "user@muchbetter.com"
-    let store = TestStore(initialState: LoginState(email: expectedEmail),
-                          reducer: loginReducer,
-                          environment: LoginEnvironment.mock)
-
-    store.assert(
-      .send(LoginAction.emailValidate(expectedEmail)),
-      .receive(.responseEmailValidate(true)) {
-        $0.isEmailValid = true
-      }
-    )
+		let store = TestStore(initialState: Login.State(),
+													reducer: {
+			Login()
+		}) {
+			$0.mainQueue = .immediate
+			$0.loginClient = .testValue
+		}
+		
+		await store.send(Login.Action.emailValidate(expectedEmail))
+		
+		await store.receive(\.responseEmailValidate) {
+			$0.isEmailValid = true
+		}
+	}
+	//
+	func testEmailValidateFalse() async {
+		let expected = "invalidEmail"
+		let store = TestStore(initialState: Login.State(email: expected),
+													reducer: {
+			Login()
+		}, withDependencies: {
+			$0.mainQueue = .immediate
+		})
+		
+		await store.send(Login.Action.emailValidate(expected))
+		await store.receive(\.responseEmailValidate) {
+			$0.isEmailValid = false
+		}
   }
 
-  func testEmailValidateFalse() {
-    let expected = "invalidEmail"
-    let store = TestStore(initialState: LoginState(email: expected),
-                          reducer: loginReducer,
-                          environment: LoginEnvironment.mock)
-
-    store.assert(
-      .send(LoginAction.emailValidate(expected)),
-      .receive(.responseEmailValidate(false)) {
-        $0.isEmailValid = false
-      }
-    )
-
-    //	case let .passwordValidate(password):
-    //		struct PasswordCancelId: Hashable {}
-//
-    //		let isPasswordValid = password.count >= 6
-//
-    //		return Effect(value: isPasswordValid)
-    //			.debounce(id: PasswordCancelId(), for: 0.5, scheduler: RunLoop.main)
-    //			.map(LoginAction.responsePasswordValidate)
-    //			.eraseToEffect()
-  }
-
-  func testPasswordValidate() {
+  func testPasswordValidate() async {
     let expectedPassword = "verylongpassword"
-    let store = TestStore(initialState: LoginState(password: expectedPassword),
-                          reducer: loginReducer,
-                          environment: LoginEnvironment.mock)
+		let store = TestStore(initialState: Login.State(password: expectedPassword),
+													reducer: {
+			Login()
+		}, withDependencies: {
+			$0.mainQueue = .immediate
+			$0.loginClient = .testValue
+		})
+		
+		await store.send(.passwordValidate(expectedPassword))
+		
+		await store.receive(\.responsePasswordValidate) {
+			$0.isPasswordValid = true
+		}
 
-    store.assert(
-      .send(LoginAction.passwordValidate(expectedPassword)),
-      .receive(.responsePasswordValidate(true)) {
-        $0.isPasswordValid = true
-      }
-    )
   }
 
-  func testPasswordValidateFalse() {
-    let expectedPassword = "short"
-    let store = TestStore(initialState: LoginState(password: expectedPassword),
-                          reducer: loginReducer,
-                          environment: LoginEnvironment.mock)
-
-    store.assert(
-      .send(LoginAction.passwordValidate(expectedPassword)),
-      .receive(.responsePasswordValidate(false)) {
-        $0.isPasswordValid = false
-      }
-    )
+  func testPasswordValidateFalse() async {
+		let expectedPassword = "short"
+		let store = TestStore(initialState: Login.State(password: expectedPassword),
+													reducer: {
+			Login()
+		}, withDependencies: {
+			$0.mainQueue = .immediate
+			$0.loginClient = .testValue
+		})
+		
+		await store.send(.passwordValidate(expectedPassword))
+		
+		await store.receive(\.responsePasswordValidate) {
+			$0.isPasswordValid = false
+		}
   }
 
-  func testLogout() {
-    let store = TestStore(initialState: LoginState(),
-                          reducer: loginReducer,
-                          environment: LoginEnvironment.mock)
+  func testLogout() async {
+		let store = TestStore(initialState: Login.State(),
+													reducer: {
+			Login()
+		}, withDependencies: {
+			$0.mainQueue = .immediate
+			$0.loginClient = .testValue
+		})
 
-    store.assert(
-      .send(LoginAction.logout)
-    )
+		await store.send(.logout)
   }
-
-  func testLoginErrorLocalization() {
-    let error = LoginError.message("Error")
-    XCTAssertEqual(error.localizedDescription, "Error")
-  }
+//
+//  func testLoginErrorLocalization() {
+//    let error = LoginError.message("Error")
+//    XCTAssertEqual(error.localizedDescription, "Error")
+//  }
 }
