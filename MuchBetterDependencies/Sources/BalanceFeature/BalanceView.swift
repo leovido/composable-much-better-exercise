@@ -2,14 +2,14 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct BalanceView: View {
-	public let store: StoreOf<BalanceReducer>
-
-	public init(store: StoreOf<BalanceReducer>) {
+	public let store: StoreOf<Balance>
+	
+	public init(store: StoreOf<Balance>) {
 		self.store = store
 	}
-
-  public var body: some View {
-		WithViewStore(store, observe: {$0}) { viewStore in
+	
+	public var body: some View {
+		WithPerceptionTracking {
 			VStack {
 				Text("Your total balance")
 					.font(.body)
@@ -17,7 +17,7 @@ public struct BalanceView: View {
 					.padding(.top, 10)
 				HStack {
 					Spacer()
-					Text(viewStore.balance)
+					Text(store.balance)
 						.font(.system(size: 50))
 						.fontWeight(.bold)
 						.padding()
@@ -43,20 +43,16 @@ public struct BalanceView: View {
 			.padding()
 			// TODO: add alert to dismiss
 			.onAppear {
-				viewStore.send(.requestFetchBalance)
+				store.send(.requestFetchBalance)
 			}
 		}
-  }
+	}
 }
 
-//struct BalanceView_Previews: PreviewProvider {
-//  public static let store: Store<BalanceReducer.State, BalanceReducer.Action> = .init(
-//    initialState: .init(balance: ""),
-//    reducer: BalanceReducer(),
-//  )
-//
-//  static var previews: some View {
-//    BalanceView(store: store)
-//      .previewLayout(.sizeThatFits)
-//  }
-//}
+#Preview {
+	BalanceView(store: .init(
+		initialState: .init(balance: ""),
+		reducer: { Balance() }
+	))
+	.previewLayout(.sizeThatFits)
+}

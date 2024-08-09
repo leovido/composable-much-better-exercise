@@ -82,6 +82,7 @@ let package = Package(
       name: "BalanceTests",
       dependencies: [
         "BalanceFeature",
+				"Common",
 				.product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
 
       ],

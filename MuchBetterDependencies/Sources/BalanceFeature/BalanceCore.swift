@@ -2,15 +2,16 @@ import Common
 import ComposableArchitecture
 
 @Reducer
-public struct BalanceReducer {
+public struct Balance: Reducer {
 	@ObservableState
 	public struct State: Equatable {
-		public var balanceAlert: AlertState<Action>?
-		public var balance: String = ""
+		var balanceAlert: AlertState<Action>?
+		var balance: String = ""
 	}
+	
 	public enum Action: Equatable {
 		case requestFetchBalance
-		case responseReceiveFetchBalance(Result<Balance, BalanceError>)
+		case responseReceiveFetchBalance(Result<BalanceModel, BalanceError>)
 		case dismissAlert
 	}
 	
@@ -19,35 +20,43 @@ public struct BalanceReducer {
 	public var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {
-				case let .responseReceiveFetchBalance(.failure(error)):
-					
-					state.balance = ""
-					
-					state.balanceAlert = .init(
-						title: TextState("Error"),
-						message: TextState(error.localizedDescription),
-						dismissButton: .default(
-							TextState("Ok"),
-							action: .send(.dismissAlert)
-						)
+			case let .responseReceiveFetchBalance(.failure(error)):
+				
+				state.balance = ""
+				
+				state.balanceAlert = .init(
+					title: TextState("Error"),
+					message: TextState(error.localizedDescription),
+					dismissButton: .default(
+						TextState("Ok"),
+						action: .send(.dismissAlert)
 					)
+				)
+				
+				return .none
+				
+			case .dismissAlert:
+				
+				state.balanceAlert = nil
+				
+				return .none
+				
+			case .requestFetchBalance:
+				
+				return .run { send in
+					let balance = try await balanceClient.fetch()
 					
-					return .none
-					
-				case .dismissAlert:
-					
-					state.balanceAlert = nil
-					
-					return .none
-					
-				case .requestFetchBalance:
-					fatalError()
-					
-				case let .responseReceiveFetchBalance(.success(balanceModel)):
-					
-					state.balance = MuchBetterNumberFormatter.formatCurrency(balanceModel)
-					
-					return .none
+					await send(.responseReceiveFetchBalance(.success(balance)))
+				} catch: { error, send in
+					await send(.responseReceiveFetchBalance(.failure(.message(error.localizedDescription))))
+				}
+				
+				
+			case let .responseReceiveFetchBalance(.success(balanceModel)):
+				
+				state.balance = MuchBetterNumberFormatter.formatCurrency(balanceModel)
+				
+				return .none
 			}
 		}
 	}

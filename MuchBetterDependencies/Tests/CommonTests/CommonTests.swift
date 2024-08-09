@@ -3,7 +3,7 @@ import XCTest
 
 final class CommonTests: XCTestCase {
   func testNumberFormatterForBalance() {
-    let balance = Balance(balance: "123", currency: .gbp)
+    let balance = BalanceModel(balance: "123", currency: .gbp)
     let current = MuchBetterNumberFormatter.formatCurrency(balance)
     let expected = "£123.00"
 
