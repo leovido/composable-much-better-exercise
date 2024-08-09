@@ -9,11 +9,11 @@ public struct Login: Reducer {
 	
 	@ObservableState
 	public struct State: Equatable {
-		@Presents public var alert: AlertState<Action.LoginAlert>?
-		public var email: String = ""
-		public var isEmailValid: Bool?
-		public var password: String = ""
-		public var isPasswordValid: Bool?
+		@Presents var alert: AlertState<Action.LoginAlert>?
+		var email: String = ""
+		var isEmailValid: Bool?
+		var password: String = ""
+		var isPasswordValid: Bool?
 	}
 	
 	public enum Action {

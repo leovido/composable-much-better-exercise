@@ -25,7 +25,7 @@ public struct AppView: View {
       LoginView(store: loginStore)
         .transition(.scale(scale: 2))
     } else: {
-      WithViewStore(store) { viewStore in
+			WithViewStore(store, observe: {$0}) { viewStore in
         TabView {
           NavigationView {
             VStack(alignment: .leading) {
@@ -81,23 +81,18 @@ public struct AppView: View {
   }
 }
 
-struct AppView_Previews: PreviewProvider {
-  public static let store: Store<AppState, AppAction> = .init(
-    initialState: .init(loginState: LoginState()),
-    reducer: appReducer,
-    environment: AppEnvironment.mock
-  )
-
-  public static let withNoLoginStore: Store<AppState, AppAction> = .init(
-    initialState: .init(loginState: nil),
-    reducer: appReducer,
-    environment: AppEnvironment.mock
-  )
-
-  static var previews: some View {
-    Group {
-      AppView(store: store)
-      AppView(store: withNoLoginStore)
-    }
-  }
+#Preview {
+	Group {
+		AppView(store: .init(
+			initialState: .init(loginState: Login.State()),
+			reducer: {
+				appReducer
+			}))
+		AppView(store: .init(
+			initialState: .init(loginState: nil),
+			reducer: {
+				appReducer
+			}))
+	}
+	
 }
