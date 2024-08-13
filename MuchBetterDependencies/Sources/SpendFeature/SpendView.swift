@@ -1,48 +1,35 @@
-//
-//  SwiftUIView.swift
-//
-//
-//  Created by Christian Leovido on 17/10/2021.
-//
-
 import ComposableArchitecture
 import SwiftUI
 
 public struct SpendView: View {
-  public let store: StoreOf<SpendReducer>
+  @Bindable public var store: StoreOf<SpendReducer>
 
   public init(store: StoreOf<SpendReducer>) {
     self.store = store
   }
 
   public var body: some View {
-    WithViewStore(store) { viewStore in
+		WithPerceptionTracking {
       NavigationView {
         VStack {
-          Form {
+					Form {
             Section {
               TextField(
-                "Description", text: viewStore.binding(
-                  get: { $0.description },
-                  send: .descriptionChanged
-                )
+								"Description", text: $store.description
               )
               .autocapitalization(.sentences)
               .disableAutocorrection(true)
 
-              TextField(
-                "Amount", text: viewStore.binding(
-                  get: { $0.amount },
-                  send: .amountChanged
-                )
-              )
+              TextField("Amount",
+												text: $store.amount)
+              
               .keyboardType(.decimalPad)
             } header: {
               Text("TRANSACTION DETAILS")
             }
             Section {
               Button {
-                viewStore.send(.spendRequest)
+                store.send(.spendRequest)
               } label: {
                 Text("Create transaction")
               }
@@ -54,8 +41,7 @@ public struct SpendView: View {
         .background(Color(UIColor.systemGray6))
         .navigationTitle(Text("Spend"))
         .alert(
-          self.store.scope(state: \.spendAlert),
-          dismiss: .dismissAlert
+					$store.scope(state: \.alert, action: \.alert)
         )
       }
     }

@@ -12,8 +12,9 @@ import Foundation
 
 @Reducer
 public struct SpendReducer: Reducer {
+	@ObservableState
 	public struct State: Equatable {
-		public var spendAlert: AlertState<Action>?
+		@Presents public var alert: AlertState<Action.Alert>?
 		public var description: String
 		public var amount: String
 		
@@ -23,28 +24,39 @@ public struct SpendReducer: Reducer {
 		}
 	}
 	
-	public enum Action: Equatable {
-		case descriptionChanged(String)
-		case amountChanged(String)
+	public enum Action: Equatable, BindableAction {
+		case binding(BindingAction<State>)
+		case alert(PresentationAction<Alert>)
 		case dismissAlert
 		case spendRequest
 		case spendResponse(Result<String, NSError>)
 		case fieldsEmptyResponse
+		@CasePathable
+		public enum Alert {
+			case confirmButtonTapped
+			case dismiss
+		}
 	}
 	
 	@Dependency(\.spendClient) var spendClient
 	
 	public var body: some ReducerOf<Self> {
+		BindingReducer()
+
 		Reduce { state, action in
 			switch action {
+				case .alert:
+					return .none
+				case .binding:
+					return .none
 				case let .spendResponse(.failure(error)):
 					
-					state.spendAlert = AlertState(
+					state.alert = AlertState(
 						title: TextState("Error"),
 						message: TextState(error.localizedDescription),
 						dismissButton: .default(
 							TextState("Ok"),
-							action: .send(.dismissAlert)
+							action: .send(.dismiss)
 						)
 					)
 					
@@ -52,24 +64,12 @@ public struct SpendReducer: Reducer {
 					
 				case .fieldsEmptyResponse:
 					
-					state.spendAlert = .init(
+					state.alert = .init(
 						title: TextState("Warning"),
 						message: TextState("Description and Amount fields are required"),
 						dismissButton: .default(TextState("Ok"),
-																		action: .send(.dismissAlert))
+																		action: .send(.dismiss))
 					)
-					
-					return .none
-					
-				case let .descriptionChanged(newDescription):
-					
-					state.description = newDescription
-					
-					return .none
-					
-				case let .amountChanged(newAmount):
-					
-					state.amount = newAmount
 					
 					return .none
 					
@@ -93,12 +93,12 @@ public struct SpendReducer: Reducer {
 					
 				case .spendResponse(.success):
 					
-					state.spendAlert = AlertState(
+					state.alert = AlertState(
 						title: TextState("Success"),
 						message: TextState("Successfully created a new transactions"),
 						dismissButton: .default(
 							TextState("Ok"),
-							action: .send(.dismissAlert)
+							action: .send(.dismiss)
 						)
 					)
 					
@@ -108,11 +108,10 @@ public struct SpendReducer: Reducer {
 					return .none
 					
 				case .dismissAlert:
-					
-					state.spendAlert = nil
-					
+					state.alert = nil
 					return .none
 			}
 		}
+			.ifLet(\.$alert, action: \.alert)
 	}
 }
