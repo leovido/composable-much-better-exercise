@@ -55,100 +55,100 @@ public struct TransactionReducer {
 	public var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {
-			case let .receiveTransactions(.failure(error)):
-				
-				state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
-				
-				state.transactionAlert = AlertState(
-					title: TextState("Error"),
-					message: TextState(error.localizedDescription),
-					dismissButton: .default(
-						TextState("Ok"),
-						action: .send(.dismissAlert)
+				case let .receiveTransactions(.failure(error)):
+					
+					state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
+					
+					state.transactionAlert = AlertState(
+						title: TextState("Error"),
+						message: TextState(error.localizedDescription),
+						dismissButton: .default(
+							TextState("Ok"),
+							action: .send(.dismissAlert)
+						)
 					)
-				)
-				
-				return .none
-				
-			case .dismissAlert:
-				
-				state.transactionAlert = nil
-				
-				return .none
-				
-			case let .sortTransactions(newSort):
-				
-				state.sort = newSort
-				
-				switch newSort {
-				case .highLowPrice:
-					let sortedTransactions = state.transactions.sorted(by: {
-						MuchBetterNumberFormatter.number(from: $0.amount) > MuchBetterNumberFormatter.number(from: $1.amount)
-					})
-					state.filteredTransactions = sortedTransactions
 					
 					return .none
-				case .lowHighPrice:
-					let sortedTransactions = state.transactions.sorted(by: {
-						MuchBetterNumberFormatter.number(from: $0.amount) < MuchBetterNumberFormatter.number(from: $1.amount)
-					})
-					state.filteredTransactions = sortedTransactions
+					
+				case .dismissAlert:
+					
+					state.transactionAlert = nil
 					
 					return .none
-				case .newToOld:
 					
-					let sortedTransactions = state.transactions.sorted(by: { $0.date > $1.date })
-					state.filteredTransactions = sortedTransactions
+				case let .sortTransactions(newSort):
+					
+					state.sort = newSort
+					
+					switch newSort {
+						case .highLowPrice:
+							let sortedTransactions = state.transactions.sorted(by: {
+								MuchBetterNumberFormatter.number(from: $0.amount) > MuchBetterNumberFormatter.number(from: $1.amount)
+							})
+							state.filteredTransactions = sortedTransactions
+							
+							return .none
+						case .lowHighPrice:
+							let sortedTransactions = state.transactions.sorted(by: {
+								MuchBetterNumberFormatter.number(from: $0.amount) < MuchBetterNumberFormatter.number(from: $1.amount)
+							})
+							state.filteredTransactions = sortedTransactions
+							
+							return .none
+						case .newToOld:
+							
+							let sortedTransactions = state.transactions.sorted(by: { $0.date > $1.date })
+							state.filteredTransactions = sortedTransactions
+							
+							return .none
+						case .oldToNew:
+							
+							let sortedTransactions = state.transactions.sorted(by: { $0.date < $1.date })
+							state.filteredTransactions = sortedTransactions
+							
+							return .none
+					}
+					
+				case let .searchTextChanged(newSearchText):
+					
+					guard !newSearchText.isEmpty
+					else {
+						state.searchText = ""
+						state.filteredTransactions = state.transactions
+						
+						return .none
+					}
+					
+					state.searchText = newSearchText
+					state.filteredTransactions = state.transactions.filter { $0.description.fuzzyMatch(newSearchText) }
 					
 					return .none
-				case .oldToNew:
 					
-					let sortedTransactions = state.transactions.sorted(by: { $0.date < $1.date })
-					state.filteredTransactions = sortedTransactions
+				case .fetchTransactions:
 					
-					return .none
-				}
-				
-			case let .searchTextChanged(newSearchText):
-				
-				guard !newSearchText.isEmpty
-				else {
-					state.searchText = ""
-					state.filteredTransactions = state.transactions
+					state.viewState = .loading
 					
-					return .none
-				}
-				
-				state.searchText = newSearchText
-				state.filteredTransactions = state.transactions.filter { $0.description.fuzzyMatch(newSearchText) }
-				
-				return .none
-				
-			case .fetchTransactions:
-				
-				state.viewState = .loading
-				
-				return .run { send in
-					let transactions = try await transactionClient.fetchTransactions()
+					return .run { send in
+						let transactions = try await transactionClient.fetchTransactions()
+						
+						await send(.receiveTransactions(.success(transactions)))
+						return
+					} catch: { error, send in
+						await send(.receiveTransactions(.failure(.message(error.localizedDescription))))
+					}
 					
-					await send(.receiveTransactions(.success(transactions)))
-					return
-				} catch: { error, send in
-					await send(.receiveTransactions(.failure(.message(error.localizedDescription))))
-				}
-				
-			case let .receiveTransactions(.success(newTransactions)):
-				
-				state.transactions = newTransactions
-				state.filteredTransactions = newTransactions
-				
-				state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
-				
-				let sortedTransactions = state.sort
-				
-				return .run { send in
-					await send(.sortTransactions(sortedTransactions))
-				}
+				case let .receiveTransactions(.success(newTransactions)):
+					
+					state.transactions = newTransactions
+					state.filteredTransactions = newTransactions
+					
+					state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
+					
+					let sortedTransactions = state.sort
+					
+					return .run { send in
+						await send(.sortTransactions(sortedTransactions))
+					}
 			}
 		}
 	}
