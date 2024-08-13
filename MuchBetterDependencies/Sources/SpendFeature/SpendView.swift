@@ -9,9 +9,9 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct SpendView: View {
-  public let store: Store<SpendState, SpendAction>
+  public let store: StoreOf<SpendReducer>
 
-  public init(store: Store<SpendState, SpendAction>) {
+  public init(store: StoreOf<SpendReducer>) {
     self.store = store
   }
 
@@ -24,7 +24,7 @@ public struct SpendView: View {
               TextField(
                 "Description", text: viewStore.binding(
                   get: { $0.description },
-                  send: SpendAction.descriptionChanged
+                  send: .descriptionChanged
                 )
               )
               .autocapitalization(.sentences)
@@ -33,7 +33,7 @@ public struct SpendView: View {
               TextField(
                 "Amount", text: viewStore.binding(
                   get: { $0.amount },
-                  send: SpendAction.amountChanged
+                  send: .amountChanged
                 )
               )
               .keyboardType(.decimalPad)
