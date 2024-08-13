@@ -1,10 +1,3 @@
-//
-//  LoginView.swift
-//
-//
-//  Created by Christian Leovido on 18/10/2021.
-//
-
 import ComposableArchitecture
 import SwiftUI
 
