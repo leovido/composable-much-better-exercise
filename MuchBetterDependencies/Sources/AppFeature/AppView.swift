@@ -13,15 +13,15 @@ import SwiftUI
 import TransactionFeature
 
 public struct AppView: View {
-  public let store: Store<AppState, AppAction>
+	public let store: StoreOf<AppReducer>
 
-  public init(store: Store<AppState, AppAction>) {
+  public init(store: StoreOf<AppReducer>) {
     self.store = store
   }
 
   public var body: some View {
     IfLetStore(store.scope(state: { $0.loginState },
-                           action: AppAction.login)) { loginStore in
+													 action: AppReducer.Action.login)) { loginStore in
       LoginView(store: loginStore)
         .transition(.scale(scale: 2))
     } else: {
@@ -31,15 +31,15 @@ public struct AppView: View {
             VStack(alignment: .leading) {
               BalanceView(
                 store: store.scope(
-                  state: { $0.balanceState },
-                  action: AppAction.balance
+									state: \.balanceState,
+                  action: \.balance
                 )
               )
 
               TransactionView(
                 store: store.scope(
-                  state: { $0.transactionState },
-                  action: AppAction.transaction
+									state: \.transactionState,
+                  action: \.transaction
                 )
               )
 
@@ -61,7 +61,10 @@ public struct AppView: View {
             Text("Dashboard")
           }
 
-          SpendView(store: store.scope(state: { $0.spendState }, action: AppAction.spend))
+          SpendView(store: store.scope(
+						state: \.spendState,
+						action: \.spend)
+					)
             .toolbar(content: {
               Button {
                 viewStore.send(.logout)
@@ -83,15 +86,15 @@ public struct AppView: View {
 
 #Preview {
 	Group {
-		AppView(store: .init(
-			initialState: .init(loginState: Login.State()),
+		AppView(store: Store<AppReducer.State, AppReducer.Action>(
+			initialState: AppReducer.State.init(),
 			reducer: {
-				appReducer
+				AppReducer()
 			}))
 		AppView(store: .init(
 			initialState: .init(loginState: nil),
 			reducer: {
-				appReducer
+				AppReducer()
 			}))
 	}
 	

@@ -52,6 +52,8 @@ public struct TransactionReducer {
 	
 	@Dependency(\.transactionClient) var transactionClient
 	
+	public init() {}
+	
 	public var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {

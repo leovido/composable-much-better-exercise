@@ -51,7 +51,7 @@ public struct BalanceView: View {
 
 #Preview {
 	BalanceView(store: .init(
-		initialState: .init(balance: ""),
+		initialState: .init(),
 		reducer: { Balance() }
 	))
 }

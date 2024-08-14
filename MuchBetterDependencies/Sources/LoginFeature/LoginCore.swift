@@ -4,9 +4,6 @@ import SwiftUI
 
 @Reducer
 public struct Login: Reducer {
-	@Dependency(\.mainQueue) var mainQueue
-	@Dependency(\.loginClient) var loginClient
-	
 	@ObservableState
 	public struct State: Equatable {
 		@Presents var alert: AlertState<Action.LoginAlert>?
@@ -14,9 +11,11 @@ public struct Login: Reducer {
 		var isEmailValid: Bool?
 		var password: String = ""
 		var isPasswordValid: Bool?
+		
+		public init() {}
 	}
 	
-	public enum Action {
+	public enum Action: Equatable {
 		case alert(PresentationAction<LoginAlert>)
 		case logout
 		case login
@@ -29,10 +28,15 @@ public struct Login: Reducer {
 		case responsePasswordValidate(Bool)
 		
 		@CasePathable
-		public enum LoginAlert {
+		public enum LoginAlert: Equatable {
 			case dismiss
 		}
 	}
+	
+	@Dependency(\.mainQueue) var mainQueue
+	@Dependency(\.loginClient) var loginClient
+	
+	public init() {}
 	
 	public var body: some ReducerOf<Self> {
 		Reduce { state, action in

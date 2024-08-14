@@ -15,13 +15,10 @@ public struct SpendReducer: Reducer {
 	@ObservableState
 	public struct State: Equatable {
 		@Presents public var alert: AlertState<Action.Alert>?
-		public var description: String
-		public var amount: String
+		public var description: String = ""
+		public var amount: String = ""
 		
-		public init(description: String = "", amount: String = "") {
-			self.description = description
-			self.amount = amount
-		}
+		public init() {}
 	}
 	
 	public enum Action: Equatable, BindableAction {
@@ -39,6 +36,8 @@ public struct SpendReducer: Reducer {
 	}
 	
 	@Dependency(\.spendClient) var spendClient
+	
+	public init() {}
 	
 	public var body: some ReducerOf<Self> {
 		BindingReducer()

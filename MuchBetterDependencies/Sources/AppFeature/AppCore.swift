@@ -1,10 +1,3 @@
-//
-//  File.swift
-//
-//
-//  Created by Christian Leovido on 12/10/2021.
-//
-
 import BalanceFeature
 import Client
 import Common
@@ -13,112 +6,73 @@ import LoginFeature
 import SpendFeature
 import TransactionFeature
 
-public struct AppState: Equatable {
-  public var balanceState: BalanceState
-  public var transactionState: TransactionState
-  public var spendState: SpendState
-  public var loginState: LoginState?
-
-  public init(
-    balanceState: BalanceState = .init(balance: ""),
-    transactionState: TransactionState = .init(),
-    spendState: SpendState = .init(),
-    loginState: LoginState? = .init()
-  ) {
-    self.balanceState = balanceState
-    self.transactionState = transactionState
-    self.spendState = spendState
-    self.loginState = loginState
-  }
+@Reducer
+public struct AppReducer {
+	@ObservableState
+	public struct State: Equatable {
+		public var balanceState: Balance.State
+		public var transactionState: TransactionReducer.State
+		public var spendState: SpendReducer.State
+		public var loginState: Login.State?
+		
+		public init(
+			balanceState: Balance.State = .init(),
+			transactionState: TransactionReducer.State = .init(),
+			spendState: SpendReducer.State = .init(),
+			loginState: Login.State? = .init()
+		) {
+			self.balanceState = balanceState
+			self.transactionState = transactionState
+			self.spendState = spendState
+			self.loginState = loginState
+		}
+	}
+	
+	public enum Action: Equatable {
+		case balance(Balance.Action)
+		case login(Login.Action)
+		case spend(SpendReducer.Action)
+		case transaction(TransactionReducer.Action)
+		case logout
+	}
+	
+	public var body: some ReducerOf<Self> {
+		Scope(state: \.spendState, action: \.spend) {
+			SpendReducer()
+		}
+		Scope(state: \.balanceState, action: \.balance) {
+			Balance()
+		}
+		Scope(state: \.transactionState, action: \.transaction) {
+			TransactionReducer()
+		}
+		Reduce { state, action in
+			switch action {
+				case .logout:
+					state.loginState = Login.State()
+					
+					return .none
+				case .balance:
+					return .none
+				case let .login(loginAction):
+					switch loginAction {
+						case .loginResponse(.success):
+							
+							state.loginState = nil
+							
+							return .none
+						default:
+							return .none
+					}
+				case .spend:
+					return .none
+				case .transaction:
+					return .none
+			}
+		}
+		.ifLet(\.loginState, action: \.login) {
+			Login()
+		}
+	}
 }
 
-public enum AppAction: Equatable {
-  case balance(BalanceAction)
-  case login(LoginAction)
-  case spend(SpendAction)
-  case transaction(TransactionAction)
-  case logout
-}
-
-public struct AppEnvironment {
-  public var mainQueue: AnySchedulerOf<DispatchQueue>
-  public var login: () -> Effect<String, Error>
-
-  public init(
-    mainQueue: AnySchedulerOf<DispatchQueue> = .main,
-    login: @escaping () -> Effect<String, Error>
-  ) {
-    self.mainQueue = mainQueue
-    self.login = login
-  }
-}
-
-public extension AppEnvironment {
-  static let live: AppEnvironment = .init(login: {
-    Client.shared.login()
-      .eraseToEffect()
-  })
-  static let mock: AppEnvironment = .init(login: {
-    Effect.fireAndForget {}
-  })
-}
-
-public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
-  loginReducer
-    .optional()
-    .pullback(
-      state: \.loginState,
-      action: /AppAction.login,
-      environment: { _ in
-        LoginEnvironment.live
-      }
-    ),
-  balanceReducer
-    .pullback(
-      state: \.balanceState,
-      action: /AppAction.balance,
-      environment: { _ in
-        BalanceEnvironment.live
-      }
-    ),
-  transactionReducer
-    .pullback(
-      state: \.transactionState,
-      action: /AppAction.transaction,
-      environment: { _ in
-        TransactionEnvironment.live
-      }
-    ),
-  spendReducer
-    .pullback(
-      state: \.spendState,
-      action: /AppAction.spend,
-      environment: { _ in
-        SpendEnvironment.live
-      }
-    )
-
-).combined(with: Reducer<AppState, AppAction, AppEnvironment>({ state, action, _ in
-  switch action {
-  case .logout:
-    state.loginState = LoginState()
-
-    return .none
-  case .balance:
-    return .none
-  case let .login(loginAction):
-    switch loginAction {
-    case .loginResponse(.success):
-
-      state.loginState = nil
-
-      return .none
-    default:
-      return .none
-    }
-  case .spend:
-    return .none
-  case .transaction:
-    return .none
-  }
-}))

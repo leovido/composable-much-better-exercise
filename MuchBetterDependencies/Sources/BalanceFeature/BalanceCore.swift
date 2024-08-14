@@ -7,6 +7,8 @@ public struct Balance: Reducer {
 	public struct State: Equatable {
 		var balanceAlert: AlertState<Action>?
 		var balance: String = ""
+		
+		public init() {}
 	}
 	
 	public enum Action: Equatable {
@@ -16,6 +18,8 @@ public struct Balance: Reducer {
 	}
 	
 	@Dependency(\.balanceClient) var balanceClient
+	
+	public init() {}
 	
 	public var body: some ReducerOf<Self> {
 		Reduce { state, action in
