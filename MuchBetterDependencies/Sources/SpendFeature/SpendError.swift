@@ -1,13 +1,6 @@
-//
-//  File.swift
-//
-//
-//  Created by Christian Leovido on 18/10/2021.
-//
-
 import Foundation
 
-public enum SpendError: Error {
+public enum SpendError: Error, Hashable {
   case message(String)
 }
 

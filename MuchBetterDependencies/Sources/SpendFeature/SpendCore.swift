@@ -29,7 +29,7 @@ public struct SpendReducer: Reducer {
 		case alert(PresentationAction<Alert>)
 		case dismissAlert
 		case spendRequest
-		case spendResponse(Result<String, NSError>)
+		case spendResponse(Result<String, SpendError>)
 		case fieldsEmptyResponse
 		@CasePathable
 		public enum Alert {
@@ -50,7 +50,6 @@ public struct SpendReducer: Reducer {
 				case .binding:
 					return .none
 				case let .spendResponse(.failure(error)):
-					
 					state.alert = AlertState(
 						title: TextState("Error"),
 						message: TextState(error.localizedDescription),
@@ -63,7 +62,6 @@ public struct SpendReducer: Reducer {
 					return .none
 					
 				case .fieldsEmptyResponse:
-					
 					state.alert = .init(
 						title: TextState("Warning"),
 						message: TextState("Description and Amount fields are required"),
@@ -89,7 +87,10 @@ public struct SpendReducer: Reducer {
 						let response = try await spendClient.spendTransaction(transaction)
 						
 						await send(.spendResponse(.success(response)))
+					} catch: { error, send in
+						await send(.spendResponse(.failure(.message(error.localizedDescription))))
 					}
+					.cancellable(id: SpendRequestCancellableId())
 					
 				case .spendResponse(.success):
 					
