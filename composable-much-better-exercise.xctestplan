@@ -17,6 +17,7 @@
   },
   "testTargets" : [
     {
+      "enabled" : false,
       "target" : {
         "containerPath" : "container:composable-much-better-exercise.xcodeproj",
         "identifier" : "47D8D4CF288387D3003C7A56",
@@ -24,6 +25,10 @@
       }
     },
     {
+      "parallelizable" : true,
+      "skippedTests" : [
+        "AppUITests"
+      ],
       "target" : {
         "containerPath" : "container:MuchBetterDependencies",
         "identifier" : "AppTests",
@@ -31,6 +36,7 @@
       }
     },
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:MuchBetterDependencies",
         "identifier" : "BalanceTests",
@@ -38,6 +44,7 @@
       }
     },
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:MuchBetterDependencies",
         "identifier" : "CommonTests",
@@ -45,6 +52,7 @@
       }
     },
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:MuchBetterDependencies",
         "identifier" : "LoginTests",
@@ -52,6 +60,7 @@
       }
     },
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:MuchBetterDependencies",
         "identifier" : "SpendTests",
@@ -59,6 +68,7 @@
       }
     },
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:MuchBetterDependencies",
         "identifier" : "TransactionTests",
