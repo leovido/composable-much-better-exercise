@@ -2,7 +2,7 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct TransactionView: View {
-	public let store: StoreOf<TransactionReducer>
+	@Bindable public var store: StoreOf<TransactionReducer>
 	
 	public init(store: StoreOf<TransactionReducer>) {
 		self.store = store
@@ -64,6 +64,7 @@ public struct TransactionView: View {
 							Text(transaction.amount)
 								.font(Font.system(size: 17, weight: .bold, design: .rounded))
 						}
+						.transition(.opacity)
 					}
 					.listStyle(InsetGroupedListStyle())
 					.refreshable {
@@ -90,19 +91,15 @@ public struct TransactionView: View {
 			}
 			.background(Color(UIColor.systemGray6))
 //			.searchable(
-//				text: store.binding(
-//					get: \.searchText,
-//					send: { .searchTextChanged }
-//				),
+//				text: $store.searchText,
 //				prompt: "Search transactions"
 //			)
-//			.alertfetchTransactions(
-//				self.store.scope(state: \.transactionAlert),
-//				dismiss: .dismissAlert
+//			.alert(
+//				$store.scope(state: \.alert, action: \.alert)
 //			)
-//			.onAppear {
-//				store.send(.fetchTransactions)
-//			}
+			.onAppear {
+				store.send(.fetchTransactions)
+			}
 		}
 	}
 	

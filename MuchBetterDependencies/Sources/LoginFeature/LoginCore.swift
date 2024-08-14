@@ -56,7 +56,7 @@ public struct Login: Reducer {
 				
 			case .logout:
 				return .run { send in
-					try await loginClient.logout()
+					_ = try await loginClient.logout()
 				}
 			case let .responseEmailValidate(isEmailValid):
 				
@@ -91,7 +91,6 @@ public struct Login: Reducer {
 				.debounce(id: PasswordCancelId(), for: 0.5, scheduler: self.mainQueue)
 				
 			case .dismissLoginAlert:
-				
 				state.alert = nil
 				
 				return .none
@@ -102,21 +101,22 @@ public struct Login: Reducer {
 				return .run { send in
 					let token = try await loginClient.login(email, password)
 					
+					// Simulate a login wait time of 2 seconds
+					try await Task.sleep(nanoseconds: 2_000_000_000)
+					
 					await send(.loginResponse(.success(token)))
 				} catch: { error, send in
 					await send(.loginResponse(.failure(.message(error.localizedDescription))))
 				}
 				
 			case .loginResponse:
-				
 				return .none
 				
 			case .dismissAlert:
-				
 				state.alert = nil
 				
 				return .none
-			case .alert(_):
+			case .alert:
 				return .none
 			}
 		}

@@ -42,8 +42,8 @@ public struct TransactionReducer {
 		}
 	}
 	
-	public enum Action: Equatable {
-		case searchTextChanged(String)
+	public enum Action: Equatable, BindableAction {
+		case binding(BindingAction<State>)
 		case fetchTransactions
 		case receiveTransactions(Result<[Transaction], TransactionError>)
 		case sortTransactions(TransactionSort)
@@ -55,8 +55,23 @@ public struct TransactionReducer {
 	public init() {}
 	
 	public var body: some ReducerOf<Self> {
+		BindingReducer()
+
 		Reduce { state, action in
 			switch action {
+				case .binding(\.searchText):
+					guard !state.searchText.isEmpty
+					else {
+						state.filteredTransactions = state.transactions
+						
+						return .none
+					}
+					
+					state.filteredTransactions = state.transactions.filter { $0.description.fuzzyMatch(state.searchText) }
+					
+					return .none
+				case .binding:
+					return .none
 				case let .receiveTransactions(.failure(error)):
 					
 					state.viewState = state.transactions.isEmpty ? .empty : .nonEmpty
@@ -110,21 +125,6 @@ public struct TransactionReducer {
 							
 							return .none
 					}
-					
-				case let .searchTextChanged(newSearchText):
-					
-					guard !newSearchText.isEmpty
-					else {
-						state.searchText = ""
-						state.filteredTransactions = state.transactions
-						
-						return .none
-					}
-					
-					state.searchText = newSearchText
-					state.filteredTransactions = state.transactions.filter { $0.description.fuzzyMatch(newSearchText) }
-					
-					return .none
 					
 				case .fetchTransactions:
 					
@@ -181,7 +181,7 @@ extension TransactionClient: DependencyKey {
 				Transaction(id: UUID().uuidString, date: Date(),
 										description: "Betfair casino", amount: "£200.00", currency: .gbp),
 				Transaction(id: UUID().uuidString, date: Date(),
-										description: "Description", amount: "£1233.12", currency: .gbp),
+										description: "Blackjack", amount: "£1233.12", currency: .gbp),
 			]
 		}
 	)

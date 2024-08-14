@@ -2,7 +2,7 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct BalanceView: View {
-	public let store: StoreOf<Balance>
+	@Bindable public var store: StoreOf<Balance>
 	
 	public init(store: StoreOf<Balance>) {
 		self.store = store
@@ -41,7 +41,9 @@ public struct BalanceView: View {
 					)
 			)
 			.padding()
-			// TODO: add alert to dismiss
+//			.alert(
+//				$store.scope(state: \.alert, action: \.alert)
+//			)
 			.onAppear {
 				store.send(.requestFetchBalance)
 			}

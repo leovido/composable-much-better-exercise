@@ -1,10 +1,3 @@
-//
-//  AppUITests.swift
-//
-//
-//  Created by Christian Leovido on 18/10/2021.
-//
-
 import Common
 import ComposableArchitecture
 import SnapshotTesting

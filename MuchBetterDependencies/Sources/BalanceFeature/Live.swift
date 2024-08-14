@@ -4,7 +4,7 @@ import Client
 import Foundation
 
 extension BalanceClient {
-	static let liveValue = Self(
+	static public let liveValue = Self(
 		fetch: {
 			guard let request = Client.shared.makeRequest(endpoint: .balance, httpMethod: .GET)
 			else {

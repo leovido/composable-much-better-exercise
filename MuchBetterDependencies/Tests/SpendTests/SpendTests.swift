@@ -49,7 +49,7 @@ final class SpendTests: XCTestCase {
 	func testFieldsEmptyResponse() async {
 		let expectedAlert = AlertState<SpendReducer.Action.Alert>(
 			title: TextState("Warning"),
-			message: TextState("Description and Amount fields are required"),
+			message: TextState("Description and amount fields are required"),
 			dismissButton: .default(TextState("Ok"),
 															action: .send(.dismiss))
 		)

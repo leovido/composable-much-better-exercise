@@ -36,15 +36,17 @@ public struct AppReducer {
 		case logout
 	}
 	
+	public init() {}
+	
 	public var body: some ReducerOf<Self> {
 		Scope(state: \.spendState, action: \.spend) {
-			SpendReducer()
+			SpendReducer().dependency(SpendClient.previewValue)
 		}
 		Scope(state: \.balanceState, action: \.balance) {
-			Balance()
+			Balance().dependency(BalanceClient.previewValue)
 		}
 		Scope(state: \.transactionState, action: \.transaction) {
-			TransactionReducer()
+			TransactionReducer().dependency(TransactionClient.testValue)
 		}
 		Reduce { state, action in
 			switch action {
@@ -57,7 +59,6 @@ public struct AppReducer {
 				case let .login(loginAction):
 					switch loginAction {
 						case .loginResponse(.success):
-							
 							state.loginState = nil
 							
 							return .none

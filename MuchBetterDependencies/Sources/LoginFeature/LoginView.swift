@@ -2,9 +2,9 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct LoginView: View {
-	public let store: Store<Login.State, Login.Action>
+	@Bindable public var store: StoreOf<Login>
 
-	public init(store: Store<Login.State, Login.Action>) {
+	public init(store: StoreOf<Login>) {
     self.store = store
   }
 
@@ -12,7 +12,10 @@ public struct LoginView: View {
 		WithPerceptionTracking {
       ProgressView("Logging you in...")
         .progressViewStyle(CircularProgressViewStyle(tint: .orange))
-//				.alert(store: store)
+				.transition(.opacity)
+				.alert(
+					$store.scope(state: \.alert, action: \.alert)
+				)
         .onAppear {
           store.send(.login)
         }

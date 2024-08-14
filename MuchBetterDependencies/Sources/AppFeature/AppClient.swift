@@ -2,11 +2,15 @@ import ComposableArchitecture
 
 @DependencyClient
 public struct AppClient {
-	public var login: () async throws -> String
+	public var login: @Sendable () async throws -> String
+	
+	public init(login: @Sendable @escaping () -> String) {
+		self.login = login
+	}
 }
 
 extension DependencyValues {
-	var appClient: AppClient {
+	public var appClient: AppClient {
 		get { self[AppClient.self] }
 		set { self[AppClient.self] = newValue}
 	}

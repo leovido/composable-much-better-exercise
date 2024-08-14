@@ -4,7 +4,7 @@ import Client
 import Foundation
 
 @DependencyClient
-struct BalanceClient {
+public struct BalanceClient {
 	var fetch: @Sendable () async throws -> BalanceModel
 }
 
@@ -16,13 +16,13 @@ extension DependencyValues {
 }
 
 extension BalanceClient: DependencyKey {
-	static let testValue = Self(
+	static public let testValue = Self(
 		fetch: {
 			throw BalanceError.message("invalid")
 		}
 	)
 	
-	static let previewValue: BalanceClient = Self(
+	static public let previewValue: BalanceClient = Self(
 		fetch: {
 			return BalanceModel(balance: "111.11", currency: .gbp)
 		}
