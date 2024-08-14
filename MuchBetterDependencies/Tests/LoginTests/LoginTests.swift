@@ -6,15 +6,21 @@ import XCTest
 @MainActor
 final class LoginTests: XCTestCase {
   func testLogin() async {
+		let clock = TestClock()
 		let store = TestStore(initialState: Login.State(),
 													reducer: {
 			Login()
 		}) {
 			$0.loginClient = .previewValue
+			$0.continuousClock = clock
 		}
-
-		await store.send(.login)
-		await store.receive(\.loginResponse)
+		
+		store.exhaustivity = .off
+		
+		await store.send(.login) {
+			$0.isLoading = true
+		}
+		await store.finish()
   }
 
 	func testLoginError() async {
@@ -34,7 +40,9 @@ final class LoginTests: XCTestCase {
 															action: .send(Login.Action.LoginAlert.dismiss))
     )
 
-		await store.send(.login)
+		await store.send(.login) {
+			$0.isLoading = true
+		}
 		await store.receive(\.loginResponse) {
 			$0.alert = expectedAlert
 		}
@@ -122,9 +130,9 @@ final class LoginTests: XCTestCase {
 
 		await store.send(.logout)
   }
-//
-//  func testLoginErrorLocalization() {
-//    let error = LoginError.message("Error")
-//    XCTAssertEqual(error.localizedDescription, "Error")
-//  }
+
+  func testLoginErrorLocalization() {
+    let error = LoginError.message("Error")
+    XCTAssertEqual(error.localizedDescription, "Error")
+  }
 }

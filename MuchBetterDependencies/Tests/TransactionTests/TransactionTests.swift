@@ -193,25 +193,25 @@ final class TransactionTests: XCTestCase {
 			.receive(.sortTransactions(expectedSort))
 		
 		await store
-			.send(.searchTextChanged("M")) {
+			.send(.binding(.set(\.searchText, "M"))) {
 				$0.searchText = "M"
 				$0.filteredTransactions = [expected]
 			}
 		
 		await store
-			.send(.searchTextChanged("Mu")) {
+			.send(.binding(.set(\.searchText, "Mu"))) {
 				$0.searchText = "Mu"
 				$0.filteredTransactions = [expected]
 			}
 		
 		await store
-			.send(.searchTextChanged("Muc")) {
+			.send(.binding(.set(\.searchText, "Muc"))) {
 				$0.searchText = "Muc"
 				$0.filteredTransactions = [expected]
 			}
 		
 		await store
-			.send(.searchTextChanged("Much")) {
+			.send(.binding(.set(\.searchText, "Much"))) {
 				$0.searchText = "Much"
 				$0.filteredTransactions = [expected]
 			}

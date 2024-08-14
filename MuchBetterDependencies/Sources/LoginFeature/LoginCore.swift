@@ -13,7 +13,14 @@ public struct Login: Reducer {
 		var isPasswordValid: Bool?
 		var isLoading: Bool = false
 		
-		public init() {}
+		public init(alert: AlertState<Action.LoginAlert>? = nil, email: String = "", isEmailValid: Bool? = nil, password: String = "", isPasswordValid: Bool? = nil, isLoading: Bool = false) {
+			self.alert = alert
+			self.email = email
+			self.isEmailValid = isEmailValid
+			self.password = password
+			self.isPasswordValid = isPasswordValid
+			self.isLoading = isLoading
+		}
 	}
 	
 	public enum Action: Equatable, BindableAction {
@@ -107,7 +114,7 @@ public struct Login: Reducer {
 						let token = try await loginClient.login(email, password)
 						
 						// Simulate a login wait time of 2 seconds
-						try await Task.sleep(nanoseconds: 2_000_000_000)
+						try await Task.sleep(for: .seconds(2))
 						
 						await send(.loginResponse(.success(token)))
 					} catch: { error, send in

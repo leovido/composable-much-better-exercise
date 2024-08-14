@@ -22,11 +22,11 @@ final class BalanceTest: XCTestCase {
 
   func testFetchBalanceFail() async {
 		let failMock = BalanceClient.testValue
-    let expectedAlert = AlertState(
+		let expectedAlert = AlertState<Balance.Action.Alert>(
       title: TextState("Error"),
       message: TextState("invalid"),
       dismissButton: .default(TextState("Ok"),
-															action: .send(Balance.Action.dismissAlert))
+															action: .send(.dismiss))
     )
 
 		let store = TestStore(initialState: Balance.State(balance: "111.11"), 
@@ -41,11 +41,11 @@ final class BalanceTest: XCTestCase {
 
 		await store.send(Balance.Action.requestFetchBalance)
 		await store.receive(Balance.Action.responseReceiveFetchBalance(.failure(expected))) {
-			$0.balanceAlert = expectedAlert
+			$0.alert = expectedAlert
 		}
 		
-		await store.send(Balance.Action.dismissAlert) {
-			$0.balanceAlert = nil
+		await store.send(.alert(.dismiss)) {
+			$0.alert = nil
 		}
   }
 

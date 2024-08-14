@@ -8,7 +8,10 @@ public struct Balance: Reducer {
 		@Presents var alert: AlertState<Action.Alert>?
 		var balance: String = ""
 		
-		public init() {}
+		public init(alert: AlertState<Action.Alert>? = nil, balance: String = "") {
+			self.alert = alert
+			self.balance = balance
+		}
 	}
 	
 	public enum Action: Equatable {

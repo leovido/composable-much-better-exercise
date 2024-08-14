@@ -7,4 +7,7 @@
    <FileRef
       location = "group:MuchBetterDependencies">
    </FileRef>
+   <FileRef
+      location = "group:composable-much-better-exercise.xctestplan">
+   </FileRef>
 </Workspace>
