@@ -16,12 +16,13 @@ final class BalanceUITests: XCTestCase {
   func testBalanceViewUIAmount() {
     let store = Store(
       initialState: .init(balance: "111.11"),
-      reducer: balanceReducer,
-      environment: .mock
+			reducer: {
+				Balance()
+			}
     )
 
     let balanceView = UIHostingController(rootView: BalanceView(store: store))
 
-    assertSnapshot(matching: balanceView, as: .image(on: .iPhoneXsMax))
+		assertSnapshot(of: balanceView, as: .image(on: .iPhoneXsMax))
   }
 }

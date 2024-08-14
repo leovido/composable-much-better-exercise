@@ -10,35 +10,30 @@ import Common
 import ComposableArchitecture
 import Foundation
 
-public extension SpendEnvironment {
-  static let live: SpendEnvironment = .init { transaction in
-    guard let data = try? JSONEncoder.customEncoder.encode(transaction)
+extension SpendClient {
+	public static let liveValue: SpendClient = Self(spendTransaction: { transaction in
+    guard let transactionData = try? JSONEncoder.customEncoder.encode(transaction)
     else {
-      return .none
+			throw SpendError.message("invalid")
     }
 
-    guard let request = Client.shared.makeRequest(data: data, endpoint: .spend, httpMethod: .POST)
+    guard let request = Client.shared.makeRequest(data: transactionData, endpoint: .spend, httpMethod: .POST)
     else {
-      return .none
+			throw SpendError.message("invalid")
     }
+		
+		let (data, response) = try await URLSession.shared.data(for: request)
 
-    return URLSession.shared.dataTaskPublisher(for: request)
-      .receive(on: DispatchQueue.main)
-      .tryFilter { _, response in
-        guard let response = response as? HTTPURLResponse
-        else {
-          return false
-        }
-
-        guard (200 ... 299) ~= response.statusCode
-        else {
-          throw SpendError.message("Please make sure you have the right amount of available funds.")
-        }
-
-        return true
-      }
-      .map { _ in "" }
-      .mapError { $0 as NSError }
-      .eraseToEffect()
-  }
+		guard let response = response as? HTTPURLResponse
+		else {
+			throw SpendError.message("invalid response")
+		}
+		
+		guard (200 ... 299) ~= response.statusCode
+		else {
+			throw SpendError.message("Please make sure you have the right amount of available funds.")
+		}
+		
+		return "success"
+  })
 }

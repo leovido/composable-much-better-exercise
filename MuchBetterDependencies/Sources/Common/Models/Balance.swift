@@ -25,7 +25,7 @@ public protocol AmountRepresentable {
   var currency: Currency { get }
 }
 
-public struct Balance: Hashable, Decodable {
+public struct BalanceModel: Hashable, Decodable {
   public let balance: String
   public var currency: Currency
 
@@ -35,7 +35,7 @@ public struct Balance: Hashable, Decodable {
   }
 }
 
-extension Balance: AmountRepresentable {
+extension BalanceModel: AmountRepresentable {
   public var amount: String {
     balance
   }

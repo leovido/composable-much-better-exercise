@@ -1,0 +1,80 @@
+{
+  "configurations" : [
+    {
+      "id" : "97203190-D51B-4F07-8149-D30A92296942",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:composable-much-better-exercise.xcodeproj",
+      "identifier" : "2D7000182715A407007213EB",
+      "name" : "composable-much-better-exercise"
+    }
+  },
+  "testTargets" : [
+    {
+      "enabled" : false,
+      "target" : {
+        "containerPath" : "container:composable-much-better-exercise.xcodeproj",
+        "identifier" : "47D8D4CF288387D3003C7A56",
+        "name" : "UITests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "skippedTests" : [
+        "AppUITests"
+      ],
+      "target" : {
+        "containerPath" : "container:MuchBetterDependencies",
+        "identifier" : "AppTests",
+        "name" : "AppTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:MuchBetterDependencies",
+        "identifier" : "BalanceTests",
+        "name" : "BalanceTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:MuchBetterDependencies",
+        "identifier" : "CommonTests",
+        "name" : "CommonTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:MuchBetterDependencies",
+        "identifier" : "LoginTests",
+        "name" : "LoginTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:MuchBetterDependencies",
+        "identifier" : "SpendTests",
+        "name" : "SpendTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:MuchBetterDependencies",
+        "identifier" : "TransactionTests",
+        "name" : "TransactionTests"
+      }
+    }
+  ],
+  "version" : 1
+}

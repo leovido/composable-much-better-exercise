@@ -1,91 +1,71 @@
-//
-//  File.swift
-//
-//
-//  Created by Christian Leovido on 12/10/2021.
-//
-
-import Client
 import Common
 import ComposableArchitecture
 
-public struct BalanceState: Equatable {
-  public var balanceAlert: AlertState<BalanceAction>?
-  public var balance: String
-
-  public init(balance: String) {
-    self.balance = balance
-  }
-}
-
-public enum BalanceAction: Equatable {
-  case requestFetchBalance
-  case responseReceiveFetchBalance(Result<Balance, BalanceError>)
-  case dismissAlert
-}
-
-public struct BalanceEnvironment {
-  public var mainQueue: AnySchedulerOf<DispatchQueue>
-  public var fetchBalance: () -> Effect<Balance, Error>
-
-  public init(
-    mainQueue: AnySchedulerOf<DispatchQueue> = .main,
-    fetchBalance: @escaping () -> Effect<Balance, Error>
-  ) {
-    self.mainQueue = mainQueue
-    self.fetchBalance = fetchBalance
-  }
-}
-
-public extension BalanceEnvironment {
-  static var mock: BalanceEnvironment = .init(mainQueue: .immediate) {
-    Effect(value: Balance(balance: "111.11", currency: .gbp))
-  }
-
-  static var failing: BalanceEnvironment = .init(mainQueue: .immediate) {
-    Effect(error: BalanceError.message("Error"))
-  }
-}
-
-// swiftlint:disable line_length
-public let balanceReducer: Reducer<BalanceState, BalanceAction, BalanceEnvironment> = .init { state, action, environment in
-  switch action {
-  case let .responseReceiveFetchBalance(.failure(error)):
-
-    state.balance = ""
-
-    state.balanceAlert = .init(
-      title: TextState("Error"),
-      message: TextState(error.localizedDescription),
-      dismissButton: .default(
-        TextState("Ok"),
-        action: .send(.dismissAlert)
-      )
-    )
-
-    return .none
-
-  case .dismissAlert:
-
-    state.balanceAlert = nil
-
-    return .none
-
-  case .requestFetchBalance:
-
-    return environment.fetchBalance()
-      .receive(on: environment.mainQueue)
-      .mapError {
-        BalanceError.message($0.localizedDescription)
-      }
-      .catchToEffect()
-      .map(BalanceAction.responseReceiveFetchBalance)
-      .eraseToEffect()
-
-  case let .responseReceiveFetchBalance(.success(balanceModel)):
-
-    state.balance = MuchBetterNumberFormatter.formatCurrency(balanceModel)
-
-    return .none
-  }
+@Reducer
+public struct Balance: Reducer {
+	@ObservableState
+	public struct State: Equatable {
+		@Presents var alert: AlertState<Action.Alert>?
+		var balance: String = ""
+		
+		public init(alert: AlertState<Action.Alert>? = nil, balance: String = "") {
+			self.alert = alert
+			self.balance = balance
+		}
+	}
+	
+	public enum Action: Equatable {
+		case alert(PresentationAction<State>)
+		case requestFetchBalance
+		case responseReceiveFetchBalance(Result<BalanceModel, BalanceError>)
+		@CasePathable
+		public enum Alert: Equatable {
+			case dismiss
+		}
+	}
+	
+	@Dependency(\.balanceClient) var balanceClient
+	
+	public init() {}
+	
+	public var body: some ReducerOf<Self> {
+		Reduce { state, action in
+			switch action {
+				case let .responseReceiveFetchBalance(.failure(error)):
+					
+					state.balance = ""
+					
+					state.alert = .init(
+						title: TextState("Error"),
+						message: TextState(error.localizedDescription),
+						dismissButton: .default(
+							TextState("Ok"),
+							action: .send(.dismiss)
+						)
+					)
+					
+					return .none
+					
+				case .requestFetchBalance:
+					
+					return .run { send in
+						let balance = try await balanceClient.fetch()
+						
+						await send(.responseReceiveFetchBalance(.success(balance)))
+					} catch: { error, send in
+						await send(.responseReceiveFetchBalance(.failure(.message(error.localizedDescription))))
+					}
+					
+					
+				case let .responseReceiveFetchBalance(.success(balanceModel)):
+					
+					state.balance = MuchBetterNumberFormatter.formatCurrency(balanceModel)
+					
+					return .none
+				case .alert:
+					return .none
+			}
+		}
+		.ifLet(\.$alert, action: \.alert)
+	}
 }

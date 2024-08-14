@@ -1,41 +1,20 @@
-//
-//  File.swift
-//
-//
-//  Created by Christian Leovido on 25/10/2021.
-//
-
-import Client
 import Common
 import ComposableArchitecture
+import Client
 import Foundation
 
-public extension BalanceEnvironment {
-  static let live: BalanceEnvironment = .init {
-    guard let request = Client.shared.makeRequest(endpoint: .balance, httpMethod: .GET)
-    else {
-      return Effect(value: Balance(balance: "", currency: .gbp))
-    }
-
-    return URLSession.shared.dataTaskPublisher(for: request)
-      .receive(on: DispatchQueue.main)
-      .map {
-        guard let response = $0.response as? HTTPURLResponse
-        else {
-          return Data()
-        }
-
-        guard (200 ..< 399) ~= response.statusCode
-        else {
-          return Data()
-        }
-
-        return $0.data
-      }
-      .decode(type: Balance.self, decoder: JSONDecoder())
-      .mapError {
-        $0 as Error
-      }
-      .eraseToEffect()
-  }
+extension BalanceClient {
+	static public let liveValue = Self(
+		fetch: {
+			guard let request = Client.shared.makeRequest(endpoint: .balance, httpMethod: .GET)
+			else {
+				throw BalanceError.message("Invalid")
+			}
+			
+			let (data, response) = try await URLSession.shared.data(for: request)
+			let result = try JSONDecoder().decode(BalanceModel.self, from: data)
+			
+			return result
+		}
+	)
 }

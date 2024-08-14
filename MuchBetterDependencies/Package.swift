@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
   name: "MuchBetterDependencies",
   platforms: [
-    .iOS(.v15),
+		.iOS(.v17)
   ],
   products: [
     .library(
@@ -40,10 +40,9 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture",
-             from: "0.28.1"),
-    .package(name: "SnapshotTesting",
-             url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
-             from: "1.9.0"),
+             from: "1.12.1"),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
+             from: "1.17.4"),
   ],
   targets: [
     .target(
@@ -61,7 +60,7 @@ let package = Package(
       name: "AppTests",
       dependencies: [
         "AppFeature",
-        "SnapshotTesting",
+				.product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
         "BalanceFeature",
         "LoginFeature",
         "SpendFeature",
@@ -74,15 +73,18 @@ let package = Package(
     .target(
       name: "BalanceFeature",
       dependencies: [
-        "Client",
         "Common",
+				"Client",
+				.product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
       ]
     ),
     .testTarget(
       name: "BalanceTests",
       dependencies: [
         "BalanceFeature",
-        "SnapshotTesting",
+				"Common",
+				.product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+
       ],
       exclude: [
         "__Snapshots__",
@@ -108,14 +110,14 @@ let package = Package(
       name: "LoginFeature",
       dependencies: [
         "Client",
-        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+				.product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
       ]
     ),
     .testTarget(
       name: "LoginTests",
       dependencies: [
         "LoginFeature",
-        "SnapshotTesting",
+				.product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__",
@@ -132,7 +134,7 @@ let package = Package(
       name: "SpendTests",
       dependencies: [
         "SpendFeature",
-        "SnapshotTesting",
+				.product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__",
@@ -149,7 +151,7 @@ let package = Package(
       name: "TransactionTests",
       dependencies: [
         "TransactionFeature",
-        "SnapshotTesting",
+				.product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__",

@@ -1,10 +1,3 @@
-//
-//  AppUITests.swift
-//
-//
-//  Created by Christian Leovido on 18/10/2021.
-//
-
 import Common
 import ComposableArchitecture
 import SnapshotTesting
@@ -16,24 +9,32 @@ final class AppUITests: XCTestCase {
   func testAppViewUI_Initial() {
     let store = Store(
       initialState: .init(),
-      reducer: appReducer,
-      environment: .mock
+			reducer: {
+				AppReducer()
+			},
+			withDependencies: {
+				$0.appClient = .previewValue
+			}
     )
 
     let appView = UIHostingController(rootView: AppView(store: store))
 
-    assertSnapshot(matching: appView, as: .image(on: .iPhoneXsMax))
+    assertSnapshot(of: appView, as: .image(on: .iPhoneXsMax))
   }
 
   func testAppViewUILoggedIn() {
-    let store = Store(
-      initialState: .init(loginState: nil),
-      reducer: appReducer,
-      environment: .mock
-    )
+		let store = Store(
+			initialState: .init(),
+			reducer: {
+				AppReducer()
+			},
+			withDependencies: {
+				$0.appClient = .previewValue
+			}
+		)
 
     let appView = UIHostingController(rootView: AppView(store: store))
 
-    assertSnapshot(matching: appView, as: .image(on: .iPhoneXsMax))
+		assertSnapshot(of: appView, as: .image(on: .iPhoneXsMax))
   }
 }
